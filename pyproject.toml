@@ -3,9 +3,10 @@ name = "scrapper"
 version = "0.1.0"
 description = "CryptoPanicScraper is an asynchronous Python web scraper that gathers cryptocurrency-related news from [CryptoPanic](https://cryptopanic.com/). It provides sentiment analysis for the news headlines using the NLTK VADER sentiment analysis tool and caches the scraped data for future use."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "asyncio>=4.0.0",
+    "ipykernel>=7.0.1",
     "nltk>=3.9.1",
     "pathlib>=1.0.1",
     "playwright>=1.48.0",

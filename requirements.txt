@@ -2,3 +2,4 @@ asyncio>=4.0.0
 nltk>=3.9.1
 pathlib>=1.0.1
 playwright>=1.48.0
+ipykernel>=7.0.1

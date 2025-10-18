@@ -14,7 +14,7 @@ CryptoPanicScraper is an asynchronous web scraper that gathers cryptocurrency-re
 
 ## Requirements
 
-- `python` (>=3.8)
+- `python` (>=3.10)
 - `asyncio`
 - `nltk`
 - `playwright`
