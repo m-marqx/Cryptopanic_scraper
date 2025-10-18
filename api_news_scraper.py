@@ -86,7 +86,7 @@ class CryptoPanicScraper:
         self.topic = symbol  # Set topic to the requested symbol
         await self.run()  # Run the scraper to fetch news
         return self.data  # Return the collected data
-    
+
     async def search_topic(self, page, topic):
         """Search for a specific topic using the search bar."""
         try:
@@ -307,12 +307,3 @@ class CryptoPanicScraper:
             pickle.dump(self.cached_data, f)
 
         logger.info(f"Data saved to {file_path}")
-
-# # Usage example
-# scraper = CryptoPanicScraper()
-# scraper.filter = 'all'
-# scraper.limit = 50
-# scraper.topic = 'BTC'
-
-# # Run the scraper asynchronously
-# asyncio.run(scraper.run())
