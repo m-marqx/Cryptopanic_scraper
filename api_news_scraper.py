@@ -2,22 +2,32 @@ import asyncio
 import os
 import pickle
 import pathlib
+import time
+import requests
 from playwright.async_api import async_playwright
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from logging_config import logger
+from tqdm import tqdm
 
 class CryptoPanicScraper:
-    SCROLL_PAUSE_TIME = 2000  # 2 seconds for page load pause
+    SCROLL_PAUSE_TIME = 2000
 
     def __init__(self, filter= None, limit=10, topic=None, save_path='news_data'):
         self.filter = filter
         self.limit = limit
-        self.topic = topic  # New parameter for topic
+        self.topic = topic
         self.save_path = save_path
         self.data = []
         self.cached_data = self.load_cached_data()  # Load cached data at initialization
         self.vader_analyzer = SentimentIntensityAnalyzer()  # Initialize VADER analyzer for sentiment analysis
         self._update_vader_lexicon()
+        pathlib.Path(self.save_path).mkdir(parents=True, exist_ok=True)
+        self.file_name = "cryptopanic"
+        self.file_name += f"_{self.filter}" if self.filter else ""
+        self.file_name += f"_{self.topic}" if self.topic else ""
+        self.file_name += "_cache.pickle"
+        self.file_path = os.path.join(self.save_path, self.file_name)
+        self.max_retries = max_retries
 
     def _update_vader_lexicon(self):
         """Updates VADER lexicon with custom financial terms and their sentiment scores."""
@@ -48,12 +58,9 @@ class CryptoPanicScraper:
 
     def load_cached_data(self):
         """Load previously scraped data (cached data) from the file if it exists."""
-        file_name = f"cryptopanic_{self.filter}_cache.pickle"
-        file_path = os.path.join(self.save_path, file_name)
-
-        if os.path.exists(file_path):
-            with open(file_path, 'rb') as f:
-                logger.info(f"Loaded cached data from {file_path}")
+        if os.path.exists(self.file_path):
+            with open(self.file_path, 'rb') as f:
+                logger.info(f"Loaded cached data from {self.file_path}")
                 return pickle.load(f)
         logger.info("No cached data found.")
         return {}
