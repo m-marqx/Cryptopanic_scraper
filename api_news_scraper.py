@@ -299,6 +299,11 @@ class CryptoPanicScraper:
         confidence = int(confidence * title_length_factor)
         return sentiment, max(0, min(confidence, 100))  # Ensure confidence is within 0-100
 
+    def merge_data(self):
+        """Merge newly scraped data with cached data."""
+        for article in self.data:
+            self.cached_data[article['URL']] = article
+
     def save_data(self):
         """Save the scraped data to a file, merging with cached data."""
         # Merge the new data with cached data
