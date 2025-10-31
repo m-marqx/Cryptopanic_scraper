@@ -305,17 +305,8 @@ class CryptoPanicScraper:
             self.cached_data[article['URL']] = article
 
     def save_data(self):
-        """Save the scraped data to a file, merging with cached data."""
-        # Merge the new data with cached data
-        for article in self.data:
-            self.cached_data[article['URL']] = article
-
-        # Save both the new and cached data
-        pathlib.Path(self.save_path).mkdir(parents=True, exist_ok=True)
-        file_name = f"cryptopanic_{self.filter}_cache.pickle"
-        file_path = os.path.join(self.save_path, file_name)
-
-        with open(file_path, 'wb') as f:
+        with open(self.file_path, 'wb') as f:
             pickle.dump(self.cached_data, f)
 
-        logger.info(f"Data saved to {file_path}")
+        logger.info(f"Data saved to {self.file_path}")
+
