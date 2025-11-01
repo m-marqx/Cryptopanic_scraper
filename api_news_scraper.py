@@ -12,15 +12,21 @@ from tqdm import tqdm
 class CryptoPanicScraper:
     SCROLL_PAUSE_TIME = 2000
 
-    def __init__(self, filter= None, limit=10, topic=None, save_path='news_data'):
+    def __init__(
+        self,
+        filter=None,
+        limit=10,
+        topic=None,
+        save_path='news_data',
+        jina_api_key=None,
+        max_retries=2,
+    ):
         self.filter = filter
         self.limit = limit
         self.topic = topic
         self.save_path = save_path
         self.data = []
-        self.cached_data = self.load_cached_data()  # Load cached data at initialization
-        self.vader_analyzer = SentimentIntensityAnalyzer()  # Initialize VADER analyzer for sentiment analysis
-        self._update_vader_lexicon()
+
         pathlib.Path(self.save_path).mkdir(parents=True, exist_ok=True)
         self.file_name = "cryptopanic"
         self.file_name += f"_{self.filter}" if self.filter else ""
@@ -28,6 +34,12 @@ class CryptoPanicScraper:
         self.file_name += "_cache.pickle"
         self.file_path = os.path.join(self.save_path, self.file_name)
         self.max_retries = max_retries
+
+        self.cached_data = self.load_cached_data()  # Load cached data at initialization
+        self.vader_analyzer = SentimentIntensityAnalyzer()  # Initialize VADER analyzer for sentiment analysis
+        self._update_vader_lexicon()
+
+        self.api_key = jina_api_key
 
     def _update_vader_lexicon(self):
         """Updates VADER lexicon with custom financial terms and their sentiment scores."""
