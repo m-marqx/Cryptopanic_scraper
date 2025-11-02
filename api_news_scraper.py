@@ -8,6 +8,10 @@ from playwright.async_api import async_playwright
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from logging_config import logger
 from tqdm import tqdm
+import json
+from typing import Literal
+import sqlalchemy
+
 
 class CryptoPanicScraper:
     SCROLL_PAUSE_TIME = 2000
@@ -20,12 +24,18 @@ class CryptoPanicScraper:
         save_path='news_data',
         jina_api_key=None,
         max_retries=2,
+        database: str | sqlalchemy.engine.Engine | None = None,
     ):
         self.filter = filter
         self.limit = limit
         self.topic = topic
         self.save_path = save_path
         self.data = []
+
+        if isinstance(database, str):
+            self.engine = sqlalchemy.create_engine(database)
+        else:
+            self.engine = database
 
         pathlib.Path(self.save_path).mkdir(parents=True, exist_ok=True)
         self.file_name = "cryptopanic"
