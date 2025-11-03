@@ -274,6 +274,25 @@ class CryptoPanicScraper:
         logger.warning(f"Failed to fetch attribute {attribute} for {selector} after {retries} retries. Using default: '{default_value}'")
         return default_value
 
+    async def get_source_type(self, element):
+        """Detect the source type based on the icon class (Twitter, YouTube, or Link)."""
+        try:
+            # Check for Twitter icon
+            twitter_icon = await element.query_selector("span.open-link-icon.icon.icon-twitter")
+            if twitter_icon:
+                return "twitter"
+
+            # Check for YouTube icon
+            youtube_icon = await element.query_selector("span.open-link-icon.icon.icon-youtube-play")
+            if youtube_icon:
+                return "youtube"
+
+            # Default to standard link
+            return "link"
+        except Exception as e:
+            logger.warning(f"Failed to detect source type: {e}")
+            return "unknown"
+
     async def get_currencies(self, element):
         """Fetch currencies linked to the article."""
         try:
