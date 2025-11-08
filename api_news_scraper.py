@@ -189,6 +189,9 @@ class CryptoPanicScraper:
                 # Extract source
                 source_name = await self.retry_fetch_text(article, "span.si-source-domain", "Unknown")
 
+                # Detect source type (Twitter, YouTube, or standard link)
+                source_type = await self.get_source_type(article)
+
                 # Extract currencies
                 currencies = await self.get_currencies(article)
 
@@ -205,6 +208,7 @@ class CryptoPanicScraper:
                     "Currencies": currencies,
                     "Votes": votes,
                     "Source": source_name,
+                    "Source_Type": source_type,
                     "URL": source_url,
                     "Sentiment": sentiment,
                     "Confidence": confidence,
