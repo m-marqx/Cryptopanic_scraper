@@ -348,9 +348,15 @@ class CryptoPanicScraper:
         for article in self.data:
             self.cached_data[article['URL']] = article
 
-    def save_data(self):
-        with open(self.file_path, 'wb') as f:
-            pickle.dump(self.cached_data, f)
+    def save_data(self, format: Literal['pickle', 'json', 'db'] = 'pickle'):
+        if format == 'pickle':
+            with open(self.file_path, 'wb') as f:
+                pickle.dump(self.cached_data, f)
+        elif format == 'json':
+            with open(self.file_path, 'w') as f:
+                json.dump(self.cached_data, f)
+        elif format == 'db':
+            self.save_data_to_db()
 
         logger.info(f"Data saved to {self.file_path}")
 
