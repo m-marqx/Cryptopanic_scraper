@@ -437,3 +437,63 @@ class CryptoPanicScraper:
             description_body = response.json()["data"]["description"]
             return description_body
 
+    async def async_fetch_description_body(
+        self,
+        page,
+        url: str,
+        minimum_time: float,
+        max_retries: int = 5,
+    ) -> str:
+        """Fetch description body using an existing page instance with retry logic for rate limiting."""
+        start = time.perf_counter()
+        full_url = f"https://cryptopanic.com{url}"
+
+        for attempt in range(max_retries):
+            try:
+                response = await page.goto(full_url)
+
+                # Check for nginx 429 error
+                if response and response.status == 429:
+                    logger.warning(f"Rate limit (429) encountered for {full_url}, attempt {attempt + 1}/{max_retries}")
+                    await asyncio.sleep(minimum_time * (attempt + 1))  # Exponential backoff
+                    continue
+                if response and response.status == 502:
+                    logger.warning(f"Server error (502) encountered for {full_url}, attempt {attempt + 1}/{max_retries}")
+                    await asyncio.sleep(minimum_time * (attempt + 1))  # Exponential backoff
+                    continue
+
+                error_table_locator = page.get_by_text(
+                    "(╯°□°）╯︵ ┻━┻",
+                    exact=False
+                )
+
+                error_text_locator = page.get_by_text(
+                    "Can't retrieve data. Possible maintenance. Please try again in a moment.",
+                    exact=False
+                )
+
+                if await error_table_locator.is_visible() or await error_text_locator.is_visible():
+                    logger.warning(f"Maintenance message found for {full_url}, attempt {attempt + 1}/{max_retries}")
+                    await asyncio.sleep(minimum_time * (attempt + 1))
+                    continue
+
+                # Wait for content to load
+                await page.wait_for_selector("div.description-body", timeout=5000)
+                content = await page.inner_text("div.description-body")
+
+
+                # Success - apply rate limiting
+                end = time.perf_counter()
+                if end - start < minimum_time:
+                    await asyncio.sleep(minimum_time - (end - start))
+                return content
+
+            except Exception as e:
+                logger.warning(f"Error fetching {full_url} (attempt {attempt + 1}/{max_retries}): {e}")
+                if attempt < max_retries - 1:
+                    await asyncio.sleep(minimum_time * (attempt + 1))
+                else:
+                    logger.error(f"Failed to fetch {full_url} after {max_retries} attempts: {e}")
+                    return f"Error fetching content: {e}"
+
+        return f"Error: Failed after {max_retries} retries"
