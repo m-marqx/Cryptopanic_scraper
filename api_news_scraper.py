@@ -521,3 +521,60 @@ class CryptoPanicScraper:
                         f"Sleeping for {rate_time - elapsed_time:.2f} seconds to respect rate limit"
                     )
 
+    async def async_update_descriptions(
+        self,
+        rate_time: float = 1.0, # Default jina rate limit for free tier for non-authenticated requests
+        update_cached_data: bool = False, # Whether to update cached data or current data
+        max_concurrent: int = 4, # Maximum number of concurrent requests
+    ):
+        """Load descriptions for articles that don't have them yet using parallel browser sessions with page pool."""
+        data_source = self.cached_data if update_cached_data else self.data
+
+        # Filter articles that need descriptions (skip Twitter and YouTube posts)
+        articles_to_update = [
+            article for article in data_source
+            if ('description_body' not in article or not article['description_body'])
+            and article.get('Source_Type') not in ['twitter', 'youtube']
+        ]
+
+        if not articles_to_update:
+            logger.info("No articles need description updates.")
+            return
+
+        # Process articles in parallel with a pool of reusable pages
+        async with async_playwright() as p:
+            browser = await p.chromium.launch(headless=False)
+
+            # Create a pool of pages
+            page_pool = [await browser.new_page() for _ in range(max_concurrent)]
+            page_queue = asyncio.Queue()
+            for page in page_pool:
+                await page_queue.put(page)
+
+            async def fetch_with_page_pool(article):
+                # Get a page from the pool
+                page = await page_queue.get()
+                try:
+                    description = await self.async_fetch_description_body(
+                        page,
+                        article['URL'],
+                        rate_time,
+                    )
+                    article['description_body'] = description
+                finally:
+                    # Return page to the pool
+                    await page_queue.put(page)
+
+            # Create tasks for all articles
+            tasks = [fetch_with_page_pool(article) for article in articles_to_update]
+
+            # Execute all tasks with progress bar
+            for coro in tqdm(asyncio.as_completed(tasks), total=len(tasks), desc="Fetching descriptions"):
+                await coro
+
+            # Close all pages in the pool
+            for page in page_pool:
+                await page.close()
+
+            await browser.close()
+            logger.info(f"Updated descriptions for {len(articles_to_update)} articles.")
