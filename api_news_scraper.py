@@ -41,7 +41,7 @@ class CryptoPanicScraper:
         self.file_name = "cryptopanic"
         self.file_name += f"_{self.filter}" if self.filter else ""
         self.file_name += f"_{self.topic}" if self.topic else ""
-        self.file_name += "_cache.pickle"
+        self.file_name += "_cache.json"
         self.file_path = os.path.join(self.save_path, self.file_name)
         self.max_retries = max_retries
 
