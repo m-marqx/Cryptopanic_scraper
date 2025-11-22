@@ -550,7 +550,7 @@ class CryptoPanicScraper:
         """Load descriptions for articles that don't have them yet."""
         start_time = time.perf_counter()
         data_source = self.cached_data if update_cached_data else self.data
-        for article in tqdm(data_source, desc="Updating descriptions"):
+        for article in tqdm(data_source, desc="Fetching descriptions"):
             if 'description_body' not in article or not article['description_body']:
                 description = self.fetch_description_body_jina(
                     article['URL'],
