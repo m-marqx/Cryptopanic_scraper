@@ -184,3 +184,39 @@ batch_5 = {
     }
 }
 
+batch_6 = {
+    "cryptodnes.bg": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".post-content",
+        "X-Remove-Selector": ".share-buttons, .related-posts, header, #menu-main-menu-en, .breadcrumbs, .author-date, #comments, footer, .u-LGiLDg5zbkyX3D2Qm0TJoD3TQrMbgMkW_invis_btn"
+    },
+    "cryptointelligence.co.uk": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".post-item-header .title-subtitle, .content-main .dropcap-content",
+    },
+    "cryptonews.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": "div.article-single__content__text",
+        "X-Remove-Selector": ".ad-container, .related-news"
+    },
+    "cryptopolitan.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": "div[data-elementor-type='single-post'] .elementor-widget-theme-post-content div.elementor-widget-container",
+        "X-Remove-Selector": ".elementor-widget-theme-post-title, .elementor-widget-post-info, .elementor-widget-post-navigation, .elementor-share-buttons--view-icon, .titlesection, .mostreadgrid"
+    },
+    "cryptopotato.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".post-content",
+        "X-Remove-Selector": ".share-buttons, .related-posts"
+    }
+}
