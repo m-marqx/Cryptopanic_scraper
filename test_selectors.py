@@ -220,3 +220,45 @@ batch_6 = {
         "X-Remove-Selector": ".share-buttons, .related-posts"
     }
 }
+
+batch_8 = {
+    "cryptoprowl.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": "#main-content"
+    },
+    "dailyhodl.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": "div.entry-content",
+        "X-Remove-Selector": "#onesignal-slidedown-container, .td-a-rec"
+    },
+    "decrypt.co": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Remove-Selector": ".linkbox, .text-start",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".z-2.flex-1.min-w-0"
+    },
+    "ecoinimist.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".entry-content"
+    },
+    "ethnews.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".td_block_wrap.tdb_single_content.tdi_63.td-pb-border-top.td_block_template_1.td-post-content.tagdiv-type"
+    },
+    "feeds2.benzinga.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": "article"
+    }
+}
+
