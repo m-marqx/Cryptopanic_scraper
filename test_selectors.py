@@ -367,3 +367,40 @@ batch_11 = {
     }
 }
 
+batch_12 = {
+    "tokenist.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".section-post__content.text-wrap, wrap.section-post__wrap",
+        "X-Remove-Selector": ".embed-page"
+    },
+    "u.today": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".article",
+        "X-Remove-Selector": ".article__main, .article__gnews"
+    },
+    "uol.com.br": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": "article",
+        "X-Remove-Selector": "footer"
+    },
+    "www.blockhead.co": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".c-topper, article .c-content",
+        "X-Remove-Selector": "article .kg-card, .c-topper .c-topper__tag.c-tag, .c-topper__meta, figure, article .c-content hr ~ *"
+    },
+    "zycrypto.com": {
+        "Accept": "application/json",
+        "Authorization": "Bearer jina_4d7479b1a43542138c177e3e3a76f7c7RgVhcuusmPIdTaGzSVumpW_Zf3Gi",
+        "X-Retain-Images": "none",
+        "X-Target-Selector": ".entry-title, .td-module-meta-info, .td-post-content.tagdiv-type",
+    }
+}
+
