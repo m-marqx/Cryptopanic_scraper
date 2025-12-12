@@ -415,3 +415,40 @@ all_headers = {**batch_1, **batch_2, **batch_3, **batch_4, **batch_5, **batch_6,
 print(f"Testing {len(all_headers)} sources...")
 print("=" * 80)
 
+for source in sorted(all_headers.keys()):
+    # Get sample URL for this source
+    source_data = unique_source_cached_data[unique_source_cached_data['Source'] == source]
+
+    if source_data.empty:
+        print(f"❌ {source}: No sample URL found in data")
+        continue
+
+    url = source_data.iloc[0]['news_redirect']
+    jina_url = f"https://r.jina.ai/{url}"
+    headers = all_headers[source]
+
+    try:
+        response = requests.get(jina_url, headers=headers, timeout=60)
+        status = response.status_code
+
+        if status == 200:
+            print(f"✅ {source}: {status}")
+            results[source]['status'] = status
+            results[source]['url'] = url
+        elif status == 422:
+            print(f"❌ {source}: {status} - SELECTOR ERROR")
+            results[source]['status'] = status
+            results[source]['url'] = url
+            results[source]['error'] = response.text[:200]
+            failed_sources.append({'source': source, 'url': url, 'headers': headers})
+        else:
+            print(f"⚠️  {source}: {status}")
+            results[source]['status'] = status
+            results[source]['url'] = url
+    except Exception as e:
+        print(f"❌ {source}: Exception - {str(e)}")
+        results[source]['status'] = 'ERROR'
+        results[source]['error'] = str(e)
+
+    # Rate limiting
+    time.sleep(0.15)
