@@ -452,3 +452,19 @@ for source in sorted(all_headers.keys()):
 
     # Rate limiting
     time.sleep(0.15)
+
+print("\n" + "=" * 80)
+print("\nSummary:")
+print(f"Total sources tested: {len(results)}")
+print(f"Sources with status 200: {sum(1 for r in results.values() if r.get('status') == 200)}")
+print(f"Sources with status 422: {sum(1 for r in results.values() if r.get('status') == 422)}")
+print(f"Sources with other errors: {sum(1 for r in results.values() if r.get('status') not in [200, 422])}")
+
+if failed_sources:
+    print("\n" + "=" * 80)
+    print("\nFailed sources (422 errors) that need inspection:")
+    for item in failed_sources:
+        print(f"\nSource: {item['source']}")
+        print(f"URL: {item['url']}")
+        print(f"Current selector: {item['headers'].get('X-Target-Selector', 'N/A')}")
+
