@@ -21,7 +21,7 @@ class CryptoPanicScraper:
         filter=None,
         limit=10,
         topic=None,
-        save_path='news_data',
+        save_path="news_data",
         jina_api_key=None,
         max_retries=2,
         database: str | sqlalchemy.engine.Engine | None = None,
@@ -45,8 +45,8 @@ class CryptoPanicScraper:
         self.file_path = os.path.join(self.save_path, self.file_name)
         self.max_retries = max_retries
 
-        self.cached_data = self.load_cached_data()  # Load cached data at initialization
-        self.vader_analyzer = SentimentIntensityAnalyzer()  # Initialize VADER analyzer for sentiment analysis
+        self.cached_data = self.load_cached_data()
+        self.vader_analyzer = SentimentIntensityAnalyzer()
         self._update_vader_lexicon()
 
         self.api_key = jina_api_key
