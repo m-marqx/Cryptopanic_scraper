@@ -73,7 +73,7 @@ class CryptoPanicScraper:
             "outperform": 2.0,
             "underperform": -2.0,
             "volatile": -1.5,
-            "fiscal": 1.2
+            "fiscal": 1.2,
         }
         self.vader_analyzer.lexicon.update(financial_terms)
         logger.info("Updated VADER lexicon with financial terms.")
