@@ -78,7 +78,10 @@ class CryptoPanicScraper:
         self.vader_analyzer.lexicon.update(financial_terms)
         logger.info("Updated VADER lexicon with financial terms.")
 
-    def load_cached_data(self, format: Literal['pickle', 'json', 'db'] = 'json'):
+    def load_cached_data(
+        self,
+        format: Literal["pickle", "json", "db"] = "json"
+    ):
         """Load previously scraped data (cached data) from the file if it exists."""
         if format == 'db':
             if not self.engine:
