@@ -212,7 +212,9 @@ class CryptoPanicScraper:
             # Load more content if possible
             await self.load_more(page)
 
-            articles = await page.query_selector_all('div.news-row.news-row-link')
+            articles = await page.query_selector_all(
+                "div.news-row.news-row-link"
+            )
             loaded_elements = len(articles)
             logger.info(f"Loaded {loaded_elements} articles so far.")
 
@@ -221,7 +223,9 @@ class CryptoPanicScraper:
                 break
 
             retries += 1
-            logger.warning(f"Retry {retries}/{self.max_retries} to load more articles.")
+            logger.warning(
+                f"Retry {retries}/{self.max_retries} to load more articles."
+            )
 
         if loaded_elements == 0:
             logger.error("No articles loaded.")
@@ -230,29 +234,37 @@ class CryptoPanicScraper:
         logger.info(f"Processing {loaded_elements} articles.")
 
         # Process each article
-        for i, article in enumerate(articles[:self.limit]):
+        for i, article in enumerate(articles[: self.limit]):
             try:
                 # Extract title
-                title = await self.retry_fetch_text(article, "span.title-text span", "Untitled")
+                title = await self.retry_fetch_text(
+                    article, "span.title-text span", "Untitled"
+                )
 
                 # Skip untitled articles
                 if title == "Untitled":
-                    logger.info(f"Skipping article {i+1}: No title found.")
+                    logger.info(f"Skipping article {i + 1}: No title found.")
                     continue
 
                 # Extract URL
-                source_url = await self.retry_fetch_attribute(article, "a.news-cell.nc-title", 'href', "N/A")
+                source_url = await self.retry_fetch_attribute(
+                    article, "a.news-cell.nc-title", "href", "N/A"
+                )
 
                 # Skip already cached articles
                 if source_url in self.cached_data:
-                    logger.info(f"Skipping article {i+1}: Already cached.")
+                    logger.info(f"Skipping article {i + 1}: Already cached.")
                     continue
 
                 # Extract date
-                date_time = await self.retry_fetch_attribute(article, 'time', 'datetime', 'N/A')
+                date_time = await self.retry_fetch_attribute(
+                    article, "time", "datetime", "N/A"
+                )
 
                 # Extract source
-                source_name = await self.retry_fetch_text(article, "span.si-source-domain", "Unknown")
+                source_name = await self.retry_fetch_text(
+                    article, "span.si-source-domain", "Unknown"
+                )
 
                 # Detect source type (Twitter, YouTube, or standard link)
                 source_type = await self.get_source_type(article)
@@ -264,7 +276,9 @@ class CryptoPanicScraper:
                 votes = await self.get_votes(article)
 
                 # Perform sentiment analysis on the title
-                sentiment, confidence = self.analyze_sentiment_with_vader(title)
+                sentiment, confidence = self.analyze_sentiment_with_vader(
+                    title
+                )
 
                 # Prepare data entry
                 article_data = {
@@ -280,10 +294,12 @@ class CryptoPanicScraper:
                 }
 
                 self.data.append(article_data)
-                logger.info(f"Scraped article {i+1}: {title} - {sentiment} - {confidence}%")
+                logger.info(
+                    f"Scraped article {i + 1}: {title} - {sentiment} - {confidence}%"
+                )
 
             except Exception as e:
-                logger.error(f"Error scraping article {i+1}: {e}")
+                logger.error(f"Error scraping article {i + 1}: {e}")
 
         logger.info(f"Finished gathering {len(self.data)} rows of data.")
 
