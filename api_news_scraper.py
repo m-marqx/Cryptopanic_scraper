@@ -21,6 +21,7 @@ class CryptoPanicScraper:
         filter=None,
         limit=10,
         topic=None,
+        verify_template_path=None,
         save_path="news_data",
         jina_api_key=None,
         max_retries=2,
@@ -31,6 +32,7 @@ class CryptoPanicScraper:
         self.topic = topic
         self.save_path = save_path
         self.data = []
+        self.template_path = verify_template_path
 
         if isinstance(database, str):
             self.engine = sqlalchemy.create_engine(database)
