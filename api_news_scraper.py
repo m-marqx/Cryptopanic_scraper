@@ -134,6 +134,23 @@ class CryptoPanicScraper:
         logger.info("No cached data file found. Starting fresh.")
         return {}
 
+    async def cloudflare_bypass(self, page: Tab):
+            counter = 0
+            while await page.find("Ray ID"):
+                counter += 1
+                logger.warning(
+                    f"Cloudflare challenge detected, waiting to verify... (Attempt {counter})"
+                )
+                await page.sleep(5)
+                await page.verify_cf(self.template_path)
+
+                if counter >= 5:
+                    logger.error(
+                        "Failed to bypass Cloudflare challenge after multiple attempts."
+                    )
+                    await page.save_screenshot(r"cf_challenge.png")
+                    raise Exception("Cloudflare challenge could not be bypassed.")
+
     async def run(self):
         """Run the scraper."""
         async with async_playwright() as p:
