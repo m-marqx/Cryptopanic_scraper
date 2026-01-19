@@ -11,7 +11,8 @@ from tqdm import tqdm
 import json
 from typing import Literal
 import sqlalchemy
-
+import nodriver as uc
+from nodriver import Tab
 
 class CryptoPanicScraper:
     SCROLL_PAUSE_TIME = 2000
