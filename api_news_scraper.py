@@ -4,7 +4,6 @@ import pickle
 import pathlib
 import time
 import requests
-from playwright.async_api import async_playwright
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from logging_config import logger
 from tqdm import tqdm
