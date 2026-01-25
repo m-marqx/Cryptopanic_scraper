@@ -233,24 +233,33 @@ class CryptoPanicScraper:
         retries = 0
         loaded_elements = 0
 
-        while loaded_elements < self.limit and retries < self.max_retries:
+        while loaded_elements < self.limit:
             # Load more content if possible
+            cached_loaded_elements: int = loaded_elements
+
             await self.load_more(page)
 
             articles = await page.query_selector_all(
                 "div.news-row.news-row-link"
             )
-            loaded_elements = len(articles)
+            loaded_elements: int = len(articles)
             logger.info(f"Loaded {loaded_elements} articles so far.")
 
-            # If enough articles are loaded, stop
-            if loaded_elements >= self.limit:
-                break
+            if loaded_elements == cached_loaded_elements:
+                retries += 1
+                logger.info(
+                    f"No new articles loaded. Retry {retries}/{self.max_retries}."
+                )
+                if retries >= self.max_retries:
+                    logger.info("Loading loop detected, stopping further attempts.")
+                    logger.info(f"Total articles loaded: {loaded_elements}")
+                    break
+            else:
+                retries = 0  # Reset retries if new articles are loaded
 
-            retries += 1
-            logger.warning(
-                f"Retry {retries}/{self.max_retries} to load more articles."
-            )
+            if await page.select("all-loaded"):
+                logger.info("All articles have been loaded.")
+                break
 
         if loaded_elements == 0:
             logger.error("No articles loaded.")
