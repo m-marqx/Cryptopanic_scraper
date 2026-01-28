@@ -338,24 +338,24 @@ class CryptoPanicScraper:
         logger.info(f"Finished gathering {len(self.data)} rows of data.")
 
     async def load_more(self, page):
-        """Load more content by scrolling down or clicking 'Load More'."""
+        """Load more content by scrolling down or clicking 'Load more'."""
         try:
-            # Check if there's a 'Load More' button and click it if it exists
-            load_more_button = await page.query_selector(
-                ".btn-outline-primary"
-            )
+            # Check if there's a 'Load more' button and click it if it exists
+            try:
+                load_more_button = await page.find("Load more")
+            except Exception:
+                load_more_button = None
+
             if load_more_button:
                 await load_more_button.click()
-                logger.info("Clicked 'Load More' button.")
             else:
-                # If no 'Load More' button, simulate scrolling
+                # If no 'Load more' button, simulate scrolling
                 await page.evaluate(
                     "window.scrollTo(0, document.body.scrollHeight)"
                 )
-                logger.info("Scrolled to the bottom of the page.")
 
             # Wait for the new content to load
-            await page.wait_for_timeout(self.SCROLL_PAUSE_TIME)
+            await page.sleep(self.SCROLL_PAUSE_TIME / 1000)
 
         except Exception as e:
             logger.error(f"Failed to load more content: {e}")
