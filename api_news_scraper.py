@@ -367,7 +367,7 @@ class CryptoPanicScraper:
             try:
                 elem = await element.query_selector(selector)
                 if elem:
-                    text = await elem.inner_text()
+                    text = elem.text
                     if text:
                         return text.strip()
             except Exception as e:
