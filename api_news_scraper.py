@@ -360,7 +360,7 @@ class CryptoPanicScraper:
         except Exception as e:
             logger.error(f"Failed to load more content: {e}")
 
-    async def retry_fetch_text(self, element, selector, default_value):
+    async def retry_fetch_text(self, element: Tab, selector: str, default_value: str) -> str:
         """Retry fetching text content from an element."""
         attempt = 0
         while attempt < self.max_retries:
