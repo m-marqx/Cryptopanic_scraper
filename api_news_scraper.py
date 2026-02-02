@@ -382,14 +382,15 @@ class CryptoPanicScraper:
         )
         return default_value
 
-    async def retry_fetch_attribute(self, element, selector, attribute, default_value):
+    async def retry_fetch_attribute(self, element: Tab, selector: str, attribute: str, default_value: str):
         """Retry fetching an attribute from an element."""
         attempt = 0
+
         while attempt < self.max_retries:
             try:
                 elem = await element.query_selector(selector)
                 if elem:
-                    attr = await elem.get_attribute(attribute)
+                    attr = elem.attrs.get(attribute)
                     if attr:
                         return attr.strip()
             except Exception as e:
