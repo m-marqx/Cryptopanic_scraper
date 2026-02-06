@@ -424,7 +424,7 @@ class CryptoPanicScraper:
         """Fetch currencies linked to the article."""
         try:
             currency_elements = await element.query_selector_all("a.colored-link")
-            currencies = [await currency.inner_text() for currency in currency_elements]
+            currencies = [currency.text for currency in currency_elements]
             return currencies if currencies else ['No currency']
         except Exception as e:
             logger.warning(f"Failed to fetch currencies: {e}")
