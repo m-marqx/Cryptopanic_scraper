@@ -436,7 +436,7 @@ class CryptoPanicScraper:
         try:
             vote_elements = await element.query_selector_all("span.nc-vote-cont")
             for vote_element in vote_elements:
-                vote_title = await vote_element.get_attribute('title')
+                vote_title = vote_element.attrs.get("title")
                 if vote_title:
                     value = vote_title[:2]
                     action = vote_title.replace(value, '').replace('votes', '').strip()
