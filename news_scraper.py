@@ -51,3 +51,133 @@ class ArticleData(TypedDict):
     votes: dict[str, int]
 
 
+class NewsArticleScraper:
+    """Scrape market news articles from CryptoPanic.
+
+    Uses zendriver (undetected Chrome) to navigate CryptoPanic's
+    Cloudflare-protected, infinite-scroll news page.  Extracts article
+    metadata and caches results to JSON for incremental scraping.
+
+    Parameters
+    ----------
+    cache_path : str, optional
+        Path to the JSON cache file, by default ``"cached_news_data.json"``.
+    unique_urls_path : str, optional
+        Path to the unique-source URL index file, by default
+        ``"cached_unique_urls.json"``.
+    headless : bool, optional
+        Whether to run the browser in headless mode, by default ``False``.
+    max_retries : int, optional
+        Maximum consecutive stale-scroll attempts before stopping,
+        by default ``5``.
+    scroll_pause : float, optional
+        Seconds to wait between scroll attempts, by default ``2.0``.
+    force_update : bool, optional
+        If ``True``, re-fetch articles already present in the cache,
+        by default ``False``.
+    verify_template_path : str or None, optional
+        Path to a custom Cloudflare verification template,
+        by default ``None`` (use zendriver's built-in template).
+    max_concurrency : int or None, optional
+        Maximum number of concurrent browser tabs, by default ``None``
+
+    Methods
+    -------
+    run() -> None
+        Execute the full scraping pipeline: launch browser, bypass
+        Cloudflare, scroll to load all articles, extract metadata, and
+        save results to disk.
+    open_all_redirect_urls(redirect_urls: list[str]) -> None
+        Open each redirect URL to resolve its final destination, with
+        incremental saving and progress tracking.
+
+    Examples
+    --------
+    >>> import asyncio
+    >>> scraper = CryptoPanicScraper(force_update=False)
+    >>> asyncio.run(scraper.run())
+    """
+
+    _BASE_URL = "https://cryptopanic.com/"
+    _CF_MAX_ATTEMPTS = 5
+    _INCREMENTAL_SAVE_INTERVAL = 50
+    _DEFAULT_MAX_CONCURRENCY = 50
+    _REDIRECT_CACHE_PATH = "cached_redirected_urls.json"
+    _REDIRECT_SAVE_INTERVAL = 100
+
+    # ------------------------------------------------------------------
+    #  JavaScript: extract ALL articles from the DOM in a single call.
+    #  This replaces thousands of sequential CDP round-trips with ONE.
+    # ------------------------------------------------------------------
+    _EXTRACT_ALL_JS = r"""
+    (() => {
+        const rows = document.querySelectorAll('div.news-row.news-row-link');
+        return Array.from(rows).map(el => {
+            const titleEl  = el.querySelector('span.title-text span');
+            const linkEl   = el.querySelector('a.news-cell.nc-title');
+            const timeEl   = el.querySelector('time');
+            const sourceEl = el.querySelector('span.si-source-domain');
+
+            const title = titleEl ? titleEl.textContent.trim() : null;
+            const url   = linkEl  ? linkEl.getAttribute('href') : null;
+            const date  = timeEl
+                ? (timeEl.getAttribute('datetime') || timeEl.textContent.trim())
+                : '';
+            const source = sourceEl ? sourceEl.textContent.trim() : 'unknown';
+
+            let sourceType = 'link';
+            if (el.querySelector('span.open-link-icon.icon.icon-twitter'))
+                sourceType = 'twitter';
+            else if (el.querySelector('span.open-link-icon.icon.icon-youtube-play'))
+                sourceType = 'youtube';
+
+            const currEls = el.querySelectorAll('a.colored-link');
+            const currencies = currEls.length
+                ? Array.from(currEls).map(n => n.textContent.trim()).filter(Boolean)
+                : ['N/A'];
+
+            const votes = {};
+            el.querySelectorAll('span.nc-vote-cont').forEach(node => {
+                const t = (node.getAttribute('title') || '').trim();
+                const m = t.match(/^\s*(\d+)\s+(.+?)\s+votes?\s*$/);
+                if (m) votes[m[2]] = parseInt(m[1], 10);
+            });
+
+            let redirectUrl = url;
+            if (url) {
+                const rm = url.match(/\/news\/(\d+)\//);
+                if (rm) redirectUrl = '/news/click/' + rm[1] + '/';
+            }
+
+            return {
+                title, url, redirect_url: redirectUrl,
+                date, source, source_type: sourceType,
+                currencies, votes
+            };
+        });
+    })()
+    """
+
+    def __init__(
+        self,
+        cache_path: str = "cached_news_data.json",
+        unique_urls_path: str = "cached_unique_urls.json",
+        headless: bool = False,
+        max_retries: int = 5,
+        scroll_pause: float = 2.0,
+        force_update: bool = False,
+        verify_template_path=None,
+        max_concurrency: int | None = None,
+    ) -> None:
+        self.cache_path = cache_path
+        self.unique_urls_path = unique_urls_path
+        self.headless = headless
+        self.max_retries = max_retries
+        self.scroll_pause = scroll_pause
+        self.force_update = force_update
+        self.template_path = verify_template_path
+        self.max_concurrency = max_concurrency or self._DEFAULT_MAX_CONCURRENCY
+
+        self.cache: dict[str, ArticleData] = self._load_cache()
+        self._new_since_last_save: int = 0
+
