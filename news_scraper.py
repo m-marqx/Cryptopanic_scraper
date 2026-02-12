@@ -181,3 +181,33 @@ class NewsArticleScraper:
         self.cache: dict[str, ArticleData] = self._load_cache()
         self._new_since_last_save: int = 0
 
+    def _load_cache(self) -> dict[str, ArticleData]:
+        """Load cached article data from disk.
+
+        Returns
+        -------
+        dict[str, ArticleData]
+            Cached articles keyed by CryptoPanic URL path.
+            Returns an empty dict if the cache file does not exist
+            or cannot be parsed.
+        """
+        if not os.path.exists(self.cache_path):
+            logger.info(
+                "No cache file found at '%s'. Starting fresh.", self.cache_path
+            )
+            return {}
+
+        try:
+            with open(self.cache_path, "r", encoding="utf-8") as fh:
+                data: dict[str, ArticleData] = json.load(fh)
+            logger.info(
+                "Loaded %d cached articles from '%s'.",
+                len(data),
+                self.cache_path,
+            )
+            return data
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.error(
+                "Failed to load cache from '%s': %s", self.cache_path, exc
+            )
+            return {}
