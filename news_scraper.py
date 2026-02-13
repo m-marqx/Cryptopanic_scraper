@@ -211,3 +211,16 @@ class NewsArticleScraper:
                 "Failed to load cache from '%s': %s", self.cache_path, exc
             )
             return {}
+
+    def _save_cache(self) -> None:
+        """Persist the article cache to disk as JSON."""
+        try:
+            with open(self.cache_path, "w", encoding="utf-8") as fh:
+                json.dump(self.cache, fh, ensure_ascii=False, indent=2)
+            logger.info(
+                "Saved %d articles to '%s'.", len(self.cache), self.cache_path
+            )
+        except OSError as exc:
+            logger.error(
+                "Failed to save cache to '%s': %s", self.cache_path, exc
+            )
