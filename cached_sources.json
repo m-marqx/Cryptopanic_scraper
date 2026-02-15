@@ -123,75 +123,75 @@
 
     "biturai.com/en/news/decoding-bitcoins-future-key-price-influencers-for-active-traders-mlcst60s": {
         "source": "biturai.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "h1, div.text-zinc-500",
+        "text_css_path": "div.prose",
+        "ignore_css_path": "div.mt-16, nav"
     },
     "cryptovalleyjournal.com/hot-topics/news/bithumb-accidentally-distributes-usd-44-billion-worth-of-bitcoin-to-users/?utm_campaign=rss_reader&utm_medium=rss&utm_source=feed_source&utm_content=Bithumb+accidentally+distributes+USD+44+billion+worth+of+Bitcoin+to+users": {
         "source": "cryptovalleyjournal.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "h1.post-title, span.posted-by, span.posted-on",
+        "text_css_path": "div.post-content",
+        "ignore_css_path": "section, figcaption"
     },
     "www.benzinga.com/crypto/cryptocurrency/26/02/50467884/crypto-firm-accidentally-sends-44-billion-in-bitcoin-to-users?utm_source=cryptopanic.com&utm_campaign=partner_feed&utm_medium=referral": {
         "source": "www.benzinga.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "h2.article-title, a.author-name, span.article-date",
+        "text_css_path": "div.article-content-body-only > div:first-of-type",
+        "ignore_css_path": "div.lazyload-wrapper, figcaption"
     },
     "news.shib.io/2026/02/07/shytoshi-kusama-schedules-new-livestream-following-inaugural-broadcast/": {
         "source": "news.shib.io",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "h1.post-title, div[class*='header'] div[class*='date'], div[class*='header'] div[class*='author']",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "div.shib-faq-section, div.shib-faq-section ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:') ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:'), div.shib-keypoints-box, p:has(a.shib-related-link), div.fluid-width-video-wrapper, div.fluid-width-video-wrapper ~ *, section.shib-author-profile, div:has(> div.shib-social-cta-buttons)"
     },
     "en.spaziocrypto.com/regulation/exchanges-report-your-crypto-data-to-the-irs/": {
         "source": "en.spaziocrypto.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "div.gh-post-head-authors, span.gh-post-head-date, h1.gh-post-page-title, p.gh-post-page-excerpt",
+        "text_css_path": "div.gh-post-content.with-sidebar",
+        "ignore_css_path": "figure"
     },
     "beincrypto.com/tether-usdt-freeze-turkish-crypto-gambling-syndicate/": {
         "source": "beincrypto.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "div[class^='AuthorsWrapper'], h1[class^='Title']",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "aside, small"
     },
     "cryptodnes.bg/en/13m-fighting-over-a-560k-allocation-why-qone-qone-is-the-most-oversubscribed-crypto-presale-of-2026-and-the-best-altcoin-to-buy-now/": {
         "source": "cryptodnes.bg",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "a.author-name-link, span.post-published-date, h1.post-title",
+        "text_css_path": "div.post-content",
+        "ignore_css_path": "span.bumpedFont17, aside"
     },
     "zycrypto.com/russias-largest-state-owned-bank-sber-to-offer-crypto-backed-loans-for-corporate-clients/": {
         "source": "zycrypto.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "div.td-module-meta-info, h1.entry-title",
+        "text_css_path": "div.td-post-content",
+        "ignore_css_path": "span.td-adspot-title, div.td-post-views, div.desc"
     },
     "coinpedia.org/price-prediction/curve-dao-crv-price-prediction/": {
         "source": "coinpedia.org",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "div.author-name-popover, span.post_date_display, h1.post-title",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "#story-highlights, figure, div.yoast-table-of-contents, p:has(strong)"
     },
     "u.today/rlusd-burn-alert-25-million-tokens-gone-on-ethereum": {
         "source": "u.today",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "div.author-brief, div.article__short-date, h1.article__title",
+        "text_css_path": "div.article__content",
+        "ignore_css_path": "div.article__related, div.brick, div.something__title, div.something, div.article__hot"
     },
     "btcusa.com/top-layer-2-blockchains-by-developer-activity-what-santiment-data-reveals/": {
         "source": "btcusa.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "header.entry-header",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "span.entry-meta-categories"
     },
     "www.binance.com/en/square/post/289115470140913?utm_source=BinanceNewsRSS": {
         "source": "www.binance.com",
-        "title_css_path": "",
-        "text_css_path": "",
-        "ignore_css_path": []
+        "title_css_path": "div.author, div.title",
+        "text_css_path": "div.article-body",
+        "ignore_css_path": "div.bn-bubble"
     },
     "coincu.com/news/crypto/21shares-files-for-ondo-etf/": {
         "source": "coincu.com",
