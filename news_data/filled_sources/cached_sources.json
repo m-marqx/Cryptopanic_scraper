@@ -1,0 +1,334 @@
+{
+    "www.ethnews.com/forward-industries-emerges-as-dominant-solana-treasury-player/": {
+        "source": "www.ethnews.com",
+        "title_css_path": "h1.tdb-title-text",
+        "text_css_path": "div.tdb-block-inner",
+        "ignore_css_path": "div.read-more, div.eth_disc, div.td-a-ad.id_top_ad, div.tdb-next-post"
+    },
+    "cointelegraph.com/news/23expect-interest-rate-cut-fomc-march?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound": {
+        "source": "cointelegraph.com",
+        "title_css_path": "h1.mb-2",
+        "text_css_path": "article.py-6",
+        "ignore_css_path": "button.group, form.relative, p:has(strong), div.my-6"
+    },
+    "ambcrypto.com/uniswap-rebounds-can-uni-push-past-4-2-ema-resistance/": {
+        "source": "ambcrypto.com",
+        "title_css_path": "h1.post-title",
+        "text_css_path": "div.single-post-inner-wrapper",
+        "ignore_css_path": "div.single-post-share, ul.mvp-post-soc-list, div.previous-blog, div.next-blog, p.wp-caption-text, hr"
+    },
+    "dailyhodl.com/2026/02/07/bank-of-america-employee-fuels-10000000000-fraud-scheme-uses-position-to-launder-millions-in-medicare-proceeds-doj/": {
+        "source": "dailyhodl.com",
+        "title_css_path": "div.entry-header",
+        "text_css_path": "div.content-inner",
+        "ignore_css_path": "div.jeg_sharelist, div.hideinamp, span"
+    },
+    "cryptopotato.com/strategys-bitcoin-treasury-is-underwater-but-2025-results-still-impressive/": {
+        "source": "cryptopotato.com",
+        "title_css_path": ["div.post-title-area", "div.date-area-meta"],
+        "text_css_path": "div.post-details-content",
+        "ignore_css_path": "ul, div.single-post-tags, h3.heading-4, div.code-block.code-block-12"
+    },
+    "www.cryptopolitan.com/13f-filings-valentines-day-october-10-crash/": {
+        "source": "www.cryptopolitan.com",
+        "title_css_path": "div.elementor-element",
+        "text_css_path": "div.elementor-widget-container:has(p)",
+        "ignore_css_path": "div.cp-post-tags, a, div.inline-news-ad, footer, details"
+    },
+    "www.newsbtc.com/news/bitcoin/bitcoin-taker-buy-ratio-signals-peak-bearish-sentiment/": {
+        "source": "www.newsbtc.com",
+        "title_css_path": "div.entry-header",
+        "text_css_path": "div.content-inner",
+        "ignore_css_path": "div.related-reading__row, div.trust, div.article-text-banner, div.ads-wrapper, div.disclaimer-shortcode, figcaption"
+    },
+    "www.cryptoprowl.com/releases/from-bitcoin-promises-to-policy-gaps-the-reality-of-trumps-crypto-agenda-3337": {
+        "source": "www.cryptoprowl.com",
+        "title_css_path": "header.article-header",
+        "text_css_path": "div.article-body",
+        "ignore_css_path": ""
+    },
+    "techgaged.com/binance-adds-3600-bitcoin-to-its-safu-fund-the-timing-is-hard-to-ignore/": {
+        "source": "techgaged.com",
+        "title_css_path": "div.space-y-6",
+        "text_css_path": "div.prose",
+        "ignore_css_path": "div.social-share-icons, div.space-y-4, h4.wp-block-heading, ul.wp-block-list"
+    },
+    "coinpaper.com/14385/dogecoin-whale-alert-20-m-transfer-coincides-with-market-recovery": {
+        "source": "coinpaper.com",
+        "title_css_path": "header",
+        "text_css_path": "div[class^='RenderHTMLTextstyles__Container']",
+        "ignore_css_path": "label, a, span, div.absolute']"
+    },
+
+    "www.cryptointelligence.co.uk/tether-freezes-hundreds-of-millions-in-crypto-following-turkish-probe/": {
+        "source": "www.cryptointelligence.co.uk",
+        "title_css_path": "div.post-item-header",
+        "text_css_path": "div.dropcap-content",
+        "ignore_css_path": "div.code-block"
+    },
+    "livecoins.com.br/jim-cramer-sugere-que-trump-abasteceu-a-reserva-de-bitcoin-com-a-queda/": {
+        "source": "livecoins.com.br",
+        "title_css_path": "h1.tdb-title-text",
+        "text_css_path": "div.tdb-block-inner",
+        "ignore_css_path": "div.td-a-ad, p.tdm-descr, div.tdb-author-box, span.tdb-logo-text-wrap, figcaption"
+    },
+    "www.coindesk.com/markets/2026/02/06/broad-based-bitcoin-accumulation-emerges-after-sharp-capitulation": {
+        "source": "www.coindesk.com",
+        "title_css_path": "[data-module-name='article-header']",
+        "text_css_path": "[data-module-name='article-body']",
+        "ignore_css_path": "[data-module-name='newsletter-article-sign-up-module'], span.font-body-sm.text-subtle, a.font-metadata-lg"
+    },
+    "decrypt.co/357296/most-surprising-bitcoin-crypto-stories-epstein-files": {
+        "source": "decrypt.co",
+        "title_css_path": "header>div>h1, header>div>h2, header.pt-6>div>div",
+        "text_css_path": "div.post-content",
+        "ignore_css_path": "header>div.text-neutral-700, figcaption, time[hidden], div.linkbox, div.text-start.p-8"
+    },
+    "portaldobitcoin.uol.com.br/justin-bieber-pagou-us-13-milhao-por-um-nft-agora-ele-vale-us-12-mil/": {
+        "source": "portaldobitcoin.uol.com.br",
+        "title_css_path": "header.entry-header",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "div.wp-caption-text, div.post-category, figcaption, div.code-block, p:contains('Leia'), div.wp-block-spacer ~ *"
+    },
+    "coindoo.com/gold-rally-often-comes-before-bitcoins-big-move-according-to-cathie-wood/": {
+        "source": "coindoo.com",
+        "title_css_path": "",
+        "text_css_path": "div.single-post-content.position-relative",
+        "ignore_css_path": "a.btn, div.read-more, p.em:has(strong), section.author-box ~ *, h5.author-name ~ *, div.author-box-conten"
+    },
+    "www.thecoinrepublic.com/2026/02/07/xrp-ledger-to-welcome-crucial-dex-amendment-as-consensus-tops-82/": {
+        "source": "www.thecoinrepublic.com",
+        "title_css_path": "div.wpb_wrapper div.tdb-block-inner.td-fix-index > div.tdb-author-name-wrap, time.entry-date",
+        "text_css_path": "div.td-post-content",
+        "ignore_css_path": "figcaption"
+    },
+    "en.bitcoinsistemi.com/will-bitcoin-price-recover-or-will-it-fall-further-chinese-analysis-company-issues-warning-for-this/": {
+        "source": "en.bitcoinsistemi.com",
+        "title_css_path": "h1.tdb-title-text, div.tdb_single_subtitle, span.tdb-author-by, a.tdb-author-name, div.tdb_single_date",
+        "text_css_path": "div.td-post-content",
+        "ignore_css_path": "figcaption, div.code-block, span.postTitle, span.ctaText, p:contains('This is not investment advice')"
+    },
+    "catenaa.com/markets/cryptocurrencies/nervos-ckb-adds-sphincs-quantum-security/": {
+        "source": "catenaa.com",
+        "title_css_path": "div.article-banner__content",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "div.cats>ul>li>a, p:contains('Nervos GitHub and technical documentation portals')"
+    },
+    "www.theblock.co/post/388958/teens-face-felony-charges-after-600-mile-drive-to-allegedly-attempt-a-66-million-crypto-robbery-reports?utm_source=rss&utm_medium=rss": {
+        "source": "www.theblock.co",
+        "title_css_path": "",
+        "text_css_path": "article.articleBody",
+        "ignore_css_path": "a.underline, button, span.acf-media-credit, div.bg-card-active, div.opacity-50, span.text-xs, span.font-display-light, span.copyright, div.hidden"
+    },
+
+    "biturai.com/en/news/decoding-bitcoins-future-key-price-influencers-for-active-traders-mlcst60s": {
+        "source": "biturai.com",
+        "title_css_path": "h1, div.text-zinc-500",
+        "text_css_path": "div.prose",
+        "ignore_css_path": "div.mt-16, nav"
+    },
+    "cryptovalleyjournal.com/hot-topics/news/bithumb-accidentally-distributes-usd-44-billion-worth-of-bitcoin-to-users/?utm_campaign=rss_reader&utm_medium=rss&utm_source=feed_source&utm_content=Bithumb+accidentally+distributes+USD+44+billion+worth+of+Bitcoin+to+users": {
+        "source": "cryptovalleyjournal.com",
+        "title_css_path": "h1.post-title, span.posted-by, span.posted-on",
+        "text_css_path": "div.post-content",
+        "ignore_css_path": "section, figcaption"
+    },
+    "www.benzinga.com/crypto/cryptocurrency/26/02/50467884/crypto-firm-accidentally-sends-44-billion-in-bitcoin-to-users?utm_source=cryptopanic.com&utm_campaign=partner_feed&utm_medium=referral": {
+        "source": "www.benzinga.com",
+        "title_css_path": "h2.article-title, a.author-name, span.article-date",
+        "text_css_path": "div.article-content-body-only > div:first-of-type",
+        "ignore_css_path": "div.lazyload-wrapper, figcaption"
+    },
+    "news.shib.io/2026/02/07/shytoshi-kusama-schedules-new-livestream-following-inaugural-broadcast/": {
+        "source": "news.shib.io",
+        "title_css_path": "h1.post-title, div[class*='header'] div[class*='date'], div[class*='header'] div[class*='author']",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "div.shib-faq-section, div.shib-faq-section ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:') ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:'), div.shib-keypoints-box, p:has(a.shib-related-link), div.fluid-width-video-wrapper, div.fluid-width-video-wrapper ~ *, section.shib-author-profile, div:has(> div.shib-social-cta-buttons)",
+        "skip": true,
+        "note": "i don't really think that shib.io is a reliable source and since is focused on shiba news, i don't think it's a good idea to use it" 
+    },
+    "en.spaziocrypto.com/regulation/exchanges-report-your-crypto-data-to-the-irs/": {
+        "source": "en.spaziocrypto.com",
+        "title_css_path": "div.gh-post-head-authors, span.gh-post-head-date, h1.gh-post-page-title, p.gh-post-page-excerpt",
+        "text_css_path": "div.gh-post-content.with-sidebar",
+        "ignore_css_path": "figure, figcaption"
+    },
+    "beincrypto.com/tether-usdt-freeze-turkish-crypto-gambling-syndicate/": {
+        "source": "beincrypto.com",
+        "title_css_path": "div[class^='AuthorsWrapper'], h1[class^='Title']",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "aside, small, figcaption"
+    },
+    "cryptodnes.bg/en/13m-fighting-over-a-560k-allocation-why-qone-qone-is-the-most-oversubscribed-crypto-presale-of-2026-and-the-best-altcoin-to-buy-now/": {
+        "source": "cryptodnes.bg",
+        "title_css_path": "a.author-name-link, span.post-published-date, h1.post-title",
+        "text_css_path": "div.post-content",
+        "ignore_css_path": "span.bumpedFont17, aside"
+    },
+    "zycrypto.com/russias-largest-state-owned-bank-sber-to-offer-crypto-backed-loans-for-corporate-clients/": {
+        "source": "zycrypto.com",
+        "title_css_path": "div.td-module-meta-info, h1.entry-title",
+        "text_css_path": "div.td-post-content",
+        "ignore_css_path": "span.td-adspot-title, div.td-post-views, div.desc"
+    },
+    "coinpedia.org/price-prediction/curve-dao-crv-price-prediction/": {
+        "source": "coinpedia.org",
+        "title_css_path": "div.author-name-popover, span.post_date_display, h1.post-title",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "#story-highlights, figure, div.yoast-table-of-contents, p:has(strong)"
+    },
+    "u.today/rlusd-burn-alert-25-million-tokens-gone-on-ethereum": {
+        "source": "u.today",
+        "title_css_path": "div.author-brief, div.article__short-date, h1.article__title",
+        "text_css_path": "div.article__content",
+        "ignore_css_path": "div.article__related, div.brick, div.something__title, div.something, div.article__hot"
+    },
+    "btcusa.com/top-layer-2-blockchains-by-developer-activity-what-santiment-data-reveals/": {
+        "source": "btcusa.com",
+        "title_css_path": "header.entry-header",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "span.entry-meta-categories"
+    },
+    "www.binance.com/en/square/post/289115470140913?utm_source=BinanceNewsRSS": {
+        "source": "www.binance.com",
+        "title_css_path": "div.author, div.title",
+        "text_css_path": "div.article-body",
+        "ignore_css_path": "div.bn-bubble"
+    },
+    "coincu.com/news/crypto/21shares-files-for-ondo-etf/": {
+        "source": "coincu.com",
+        "title_css_path": "div.box-text-inner, h1.post-title",
+        "text_css_path": "ul.wp-block-list ~ *",
+        "ignore_css_path": "div.right-sidebar, figcaption, em:has(strong:contains('DISCLAIMER'))"
+    },
+    "advertorial.cryptonews.com/press-releases/23x-oversubscribed-500k-raised-in-hours-if-youre-not-already-in-qone-this-is-your-last-warning/": {
+        "source": "advertorial.cryptonews.com",
+        "title_css_path": "",
+        "text_css_path": "",
+        "ignore_css_path": "*",
+        "skip": true ,
+        "note": "is advertorial source"
+    },
+    "cryptonews.com/news/xrp-prints-bearish-gravestone-doji-recovery-stalls-1-65-resistance/": {
+        "source": "cryptonews.com",
+        "title_css_path": "",
+        "text_css_path": "",
+        "ignore_css_path": "*",
+        "skip": true,
+        "note": "the advertisement is not clearly marked, this will lead to low quality data and false positives."
+    },
+    "www.fxstreet.com/cryptocurrencies/news/ethereum-weekly-price-forecast-trend-research-capitulates-bitmines-thomas-lee-sees-a-v-shaped-recovery-202602071422": {
+        "source": "www.fxstreet.com",
+        "title_css_path": "span.text-meta > a, header time, h1.text-headline-4xl",
+        "text_css_path": "div#post-content-section",
+        "ignore_css_path": "figcaption, ul, strong:contains('price today'), .post-module, figure"
+    },
+    "finbold.com/heres-how-much-crypto-blackrock-dumped-in-the-first-week-of-february/": {
+        "source": "finbold.com",
+        "title_css_path": ".self-center > a span, header > div > .self-center > div time, h1.entry-title",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "figure, figcaption, .share, .not-prose, em:contains('Featured image')"
+    },
+    "br.beincrypto.com/vitalik-buterin-doacao-privacidade-zcash/": {
+        "source": "br.beincrypto.com",
+        "title_css_path": "div[class^='AuthorsWrapper'], h1[class^='Title']",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "aside, small"
+    },
+    "ecoinimist.com/2026/02/07/dow-jones-hits-50k-milestone/?utm_source=rss&utm_medium=rss&utm_campaign=dow-jones-hits-50k-milestone": {
+        "source": "ecoinimist.com",
+        "title_css_path": "h2.widget-title, div.pp-author-boxes-name, h1.cm-entry-title",
+        "text_css_path": "div.cm-entry-summary",
+        "ignore_css_path": "div#ez-toc-container, figure, figcaption, p.has-text-align-center, script, .sevioads, .sharedaddy, div.pp-author-boxes-avatar-details div.pp-author-boxes-name ~ *"
+    },
+    "www.thestreet.com/crypto/markets/popular-crypto-company-exits-bitcoin-amid-crash": {
+        "source": "www.thestreet.com",
+        "title_css_path": ".m-detail-header--flexbox, h1.m-detail-header--title, .m-detail-header--dek",
+        "text_css_path": ".m-detail--body",
+        "ignore_css_path": "figure, figcaption, phoenix-super-link, aside, h3#popular-on-thestreet-roundtable + ul, h3#popular-on-thestreet-roundtable, .m-detail--body section, h3#more-news + ul, h3#more-news"
+    },
+    "sfctoday.com/stocks/us-valuations-above-long-term-averages-but-earnings-growth-still-justifies-premium": {
+        "source": "sfctoday.com",
+        "title_css_path": "div[data-test-id='author-card-default'], time.arr__timeago, bdi, div.p-alt",
+        "text_css_path": "div.arr--story-page-card-wrapper",
+        "ignore_css_path": "figure, figcaption"
+    },
+    "blocknews.com/hedera-drops-35-as-hbar-loses-0-10-support-and-crypto-death-cross-signals-risk/": {
+        "source": "blocknews.com",
+        "title_css_path": "div.jeg_meta_author, div.jeg_meta_date, h1.jeg_post_title",
+        "text_css_path": "div.content-inner",
+        "ignore_css_path": "div.jeg_sharelist, div.hideinamp, span, figure, figcaption, ul, div.post-disclaimer, div.jnews_related_post_container, div.jeg_sidebar"
+    },
+    "dailycoin.com/xrp-spot-etfs-lead-crypto-inflows-but-prices-refuse-to-budge/": {
+        "source": "dailycoin.com",
+        "title_css_path": "a.author, .mkd-post-info-date time, h1.mkd-post-title, article h1.mkd-post-title + p",
+        "text_css_path": "div.mkd-post-text-inner",
+        "ignore_css_path": ".code-block, p:has(strong:contains('hottest crypto news now')) ~ *, p:has(strong:contains('hottest crypto news now')), figure, figcaption, aside"
+    },
+    "thedefiant.io/news/markets/bitcoin-selloff-sparks-hedge-fund-speculation-around-blackrock-etf": {
+        "source": "thedefiant.io",
+        "title_css_path": "article div.text-accent-foregroundfont-sans, article h1, article div.font-serif",
+        "text_css_path": "div.prose",
+        "ignore_css_path": "figure, figcaption",
+        "note": "watch out subtitle, to me, the path `article div.font-serif` seems likely to change in the future"
+    },
+    "solanafloor.com/pt/news/is-the-crypto-crash-over": {
+        "source": "solanafloor.com",
+        "title_css_path": "div[itemprop='author'], li[itemprop='datePublished'], div.text-center h1, div.text-center h1 + p",
+        "text_css_path": "div.content",
+        "ignore_css_path": "figure, figcaption, h2:contains('Read More') ~ *, h2:contains('Read More'), .twitter-tweet"
+    },
+    "www.bankless.com/read/the-zkevm-is-the-new-merge": {
+        "source": "www.bankless.com",
+        "title_css_path": "",
+        "text_css_path": "",
+        "ignore_css_path": "*",
+        "skip": true,
+        "note": "paywall is enabled on this site"
+    },
+    "www.criptofacil.com/semana-ruim-cripto-derruba-bitcoin-altcoins-dados/": {
+        "source": "www.criptofacil.com",
+        "title_css_path": ".entry-meta, h1.entry-title",
+        "text_css_path": "div.entry-content",
+        "ignore_css_path": "figure, figcaption, .authorByline_tooltip, img, div[class^='cript']"
+    },
+    "protos.com/inside-defi-003-crypto-in-crisis-defi-doomerism/": {
+        "source": "protos.com",
+        "title_css_path": "header a.transition-opacity, header time, header h1, ",
+        "text_css_path": "div.s-single",
+        "ignore_css_path": "figure, figcaption, .authorByline_tooltip, img, div[class^='cript'], .twitter-tweet, iframe, em, .s-single .b-container__main"
+    },
+    "cryptoslate.com/bitcoin-whales-are-dumping-massive-amounts-of-supply-on-exchanges-as-liquidations-mirror-the-2022-ftx-market-collapse/": {
+        "source": "cryptoslate.com",
+        "title_css_path": "a.magazine-author-card__name, span.magazine-hero__byline time, h1.magazine-hero__title, p.magazine-hero__subheading",
+        "text_css_path": "div.post-box",
+        "ignore_css_path": "figure, figcaptions, div.cs-article-embed, div.cs-inline-newsletter, div.code-block, div.post-bottom"
+    },
+    "theholycoins.com/news/lightchain-ai-launches-usdlcai-token-on-uniswap-after-usd21m-presale-price-drops-80-within": {
+        "source": "theholycoins.com",
+        "title_css_path": "",
+        "text_css_path": "",
+        "ignore_css_path": "*",
+        "skip": true,
+        "note": "advertorial website"
+    },
+    "99bitcoins.com/news/bitcoin-btc/ubs-crypto-not-asset-bitcoin-whales-etfs/": {
+        "source": "99bitcoins.com",
+        "title_css_path": "div.nnbtc-header__post-meta > div.nnbtc-article-top__author-top .nnbtc-article-top__author-info, h1.nnbtc-header__title",
+        "text_css_path": ".nnbtc-article__content-main",
+        "ignore_css_path": "figure, figcaptions, .chart, .nnbtc-toc--mobile, strong:contains('DISCOVER'), p:has(img) + p:has(a.general-link), p:contains('99Bitcoins on X'), section, .trust-us, .nnbtc-google-news, .profile-frontend"
+    },
+    "coinjournal.net/news/hbar-surges-15-and-xlm-gains-10-as-bitcoin-reclaims-70k/": {
+        "source": "coinjournal.net",
+        "title_css_path": ".meta, section.region .container .container",
+        "text_css_path": ".post-article-content",
+        "ignore_css_path": ".breadcrumbs, ul, figure, figcaption, .post-meta"
+    },
+    "https://axeladlerjr.com/bitcoin-miner-reserve-outflow-tracking-selling-pressure/": {
+        "source": "https://axeladlerjr.com",
+        "title_css_path": "li a picture + span, .leading-none time, h1.text-typ, p.text-base",
+        "text_css_path": "article",
+        "ignore_css_path": ".hidden, h2#tldr + ul, h2#tldr, figure, h2#related-guides + ul, h2#related-guides, h2#conclusion ~ *, h2#conclusion, p:has(+ .kg-audio-card), .kg-audio-card, .kg-signup-card, a[href^='/tag/'], p:has(a + br), p:has(a[rel='noreferrer'])",
+        "note": "this website has many subtle ads, so it's better to check and maybe ignore this site too, but seems that has quality content"
+    }
+}
