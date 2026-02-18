@@ -143,7 +143,9 @@
         "source": "news.shib.io",
         "title_css_path": "h1.post-title, div[class*='header'] div[class*='date'], div[class*='header'] div[class*='author']",
         "text_css_path": "div.entry-content",
-        "ignore_css_path": "div.shib-faq-section, div.shib-faq-section ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:') ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:'), div.shib-keypoints-box, p:has(a.shib-related-link), div.fluid-width-video-wrapper, div.fluid-width-video-wrapper ~ *, section.shib-author-profile, div:has(> div.shib-social-cta-buttons)"
+        "ignore_css_path": "div.shib-faq-section, div.shib-faq-section ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:') ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:'), div.shib-keypoints-box, p:has(a.shib-related-link), div.fluid-width-video-wrapper, div.fluid-width-video-wrapper ~ *, section.shib-author-profile, div:has(> div.shib-social-cta-buttons)",
+        "skip": true,
+        "note": "i don't really think that shib.io is a reliable source and since is focused on shiba news, i don't think it's a good idea to use it" 
     },
     "en.spaziocrypto.com/regulation/exchanges-report-your-crypto-data-to-the-irs/": {
         "source": "en.spaziocrypto.com",
