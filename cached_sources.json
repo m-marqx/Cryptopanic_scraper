@@ -151,13 +151,13 @@
         "source": "en.spaziocrypto.com",
         "title_css_path": "div.gh-post-head-authors, span.gh-post-head-date, h1.gh-post-page-title, p.gh-post-page-excerpt",
         "text_css_path": "div.gh-post-content.with-sidebar",
-        "ignore_css_path": "figure"
+        "ignore_css_path": "figure, figcaption"
     },
     "beincrypto.com/tether-usdt-freeze-turkish-crypto-gambling-syndicate/": {
         "source": "beincrypto.com",
         "title_css_path": "div[class^='AuthorsWrapper'], h1[class^='Title']",
         "text_css_path": "div.entry-content",
-        "ignore_css_path": "aside, small"
+        "ignore_css_path": "aside, small, figcaption"
     },
     "cryptodnes.bg/en/13m-fighting-over-a-560k-allocation-why-qone-qone-is-the-most-oversubscribed-crypto-presale-of-2026-and-the-best-altcoin-to-buy-now/": {
         "source": "cryptodnes.bg",
