@@ -230,3 +230,32 @@ class NewsArticleScraper:
             logger.error(
                 "Failed to save cache to '%s': %s", self.cache_path, exc
             )
+    def _load_sources_config(self) -> dict:
+        """Load formatted source selectors from disk.
+
+        Returns
+        -------
+        dict
+            Source config keyed by domain.
+        """
+        if not os.path.exists(self._FORMATTED_SOURCES_PATH):
+            logger.warning(
+                "Formatted sources not found at '%s'.",
+                self._FORMATTED_SOURCES_PATH,
+            )
+            return {}
+
+        try:
+            with open(self._FORMATTED_SOURCES_PATH, "r", encoding="utf-8") as fh:
+                data = json.load(fh)
+            logger.info(
+                "Loaded %d source configs from '%s'.",
+                len(data),
+                self._FORMATTED_SOURCES_PATH,
+            )
+            return data
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.error(
+                "Failed to load sources config: %s", exc
+            )
+            return {}
