@@ -315,6 +315,22 @@ class NewsArticleScraper:
 
         logger.info("Cloudflare challenge cleared.")
 
+
+    async def _click_load_more(self, page: Tab) -> None:
+        """Click the "Load more" button if it exists on the page.
+
+        Parameters
+        ----------
+        page : Tab
+            The current page/tab.
+        """
+        try:
+            button = await page.find("Load more", timeout=1)
+            if button:
+                await button.click()
+                await page.sleep(self.scroll_pause)
+        except Exception:
+            pass
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
