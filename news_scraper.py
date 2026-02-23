@@ -627,3 +627,26 @@ class NewsArticleScraper:
                 "Failed to load sources config: %s", exc
             )
             return {}
+
+    def _find_source_config(self, source: str) -> dict | None:
+        """Find the source config for a given domain.
+
+        Matches by stripping common prefixes from both the source
+        and the config keys.
+
+        Parameters
+        ----------
+        source : str
+            The source domain (e.g. ``"ethnews.com"``).
+
+        Returns
+        -------
+        dict or None
+            The source config dict, or ``None`` if not found.
+        """
+        stripped = self._strip_single_prefix(source)
+        for key, config in self._sources_config.items():
+            if self._strip_single_prefix(key) == stripped:
+                return config
+        return None
+
