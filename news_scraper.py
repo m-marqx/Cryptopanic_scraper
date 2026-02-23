@@ -327,6 +327,46 @@ class NewsArticleScraper:
 
         logger.info("Cloudflare challenge cleared.")
 
+    async def _parse_articles_concurrent(self, page: Tab) -> int:
+        """Parse all article elements concurrently with a TaskGroup.
+
+        Uses ``asyncio.TaskGroup`` (Python 3.11+) with a
+        ``asyncio.Semaphore`` to cap the number of in-flight CDP
+        requests at ``self.max_concurrency``.
+
+        Parameters
+        ----------
+        page : Tab
+            The zendriver page/tab.
+
+        Returns
+        -------
+        int
+            Number of new articles stored.
+        """
+        articles = await page.query_selector_all("div.news-row.news-row-link")
+        total = len(articles)
+        logger.info(
+            "Concurrent parsing: %d articles, concurrency=%d.",
+            total,
+            self.max_concurrency,
+        )
+
+        sem = asyncio.Semaphore(self.max_concurrency)
+        results: list[bool] = []
+
+        async def _limited_parse(el: Tab, idx: int) -> bool:
+            async with sem:
+                return await self._parse_and_store(el, idx, total)
+
+        async with asyncio.TaskGroup() as tg:
+            tasks = [
+                tg.create_task(_limited_parse(el, idx))
+                for idx, el in enumerate(articles, start=1)
+            ]
+
+        results = [t.result() for t in tasks]
+        return sum(results)
 
     async def _click_load_more(self, page: Tab) -> None:
         """Click the "Load more" button if it exists on the page.
