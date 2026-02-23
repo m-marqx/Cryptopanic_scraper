@@ -115,9 +115,10 @@ class NewsArticleScraper:
     _FORMATTED_SOURCES_PATH = "news_data/filled_sources/formatted_sources.json"
     _CONTENT_CACHE_PATH = "news_data/cached_news_content.json"
     _JINA_BASE_URL = "https://r.jina.ai/"
-    _JINA_RATE_LIMIT_AUTH = 0.12   # seconds between requests (with API key)
-    _JINA_RATE_LIMIT_FREE = 3.0    # seconds between requests (without API key)
-    _REDIRECT_SAVE_INTERVAL = 100
+    _DATABASE_URL = os.getenv("DATABASE_URL")
+    _JINA_RATE_LIMIT_AUTH = 0.12  # seconds between requests (with API key)
+    _JINA_RATE_LIMIT_FREE = 3.0  # seconds between requests (without API key)
+    _REDIRECT_SAVE_INTERVAL = 10
 
     # ------------------------------------------------------------------
     #  JavaScript: extract ALL articles from the DOM in a single call.
@@ -675,3 +676,50 @@ class NewsArticleScraper:
                 exc,
             )
 
+    def _save_data_in_db(
+        self,
+        content: pd.DataFrame,
+        table_name: str = "news_content",
+        schema: str = "public",
+    ):
+        content = content.copy()
+
+        def make_serializable(obj):
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            if isinstance(obj, (np.integer, np.floating)):
+                return obj.item()
+            return obj
+
+        # Pre-process JSONB columns to handle non-serializable numpy types
+        for col in ["currencies", "votes"]:
+            if col in content.columns:
+                content[col] = content[col].apply(make_serializable)
+
+        database_url = self._DATABASE_URL
+        engine = create_engine(database_url)
+
+        from sqlalchemy.dialects.postgresql import insert
+
+        def upsert_method(table, conn, keys, data_iter):
+            data = [dict(zip(keys, row)) for row in data_iter]
+            insert_stmt = insert(table.table).values(data)
+            upsert_stmt = insert_stmt.on_conflict_do_update(
+                index_elements=["redirect_url"],
+                set_={
+                    c.name: c
+                    for c in insert_stmt.excluded
+                    if c.name != "redirect_url"
+                },
+            )
+            conn.execute(upsert_stmt)
+
+        content.to_sql(
+            name=table_name,
+            con=engine,
+            if_exists="append",
+            index=False,
+            dtype={"currencies": JSONB, "votes": JSONB},
+            schema=schema,
+            method=upsert_method,
+        )
