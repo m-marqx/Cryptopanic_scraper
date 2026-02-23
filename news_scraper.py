@@ -427,6 +427,49 @@ class NewsArticleScraper:
             logger.error("Error parsing article %d: %s", index, exc)
             return False
 
+    async def _parse_article(self, element: Tab) -> ArticleData | None:
+        """Extract article metadata from a news-row DOM element.
+
+        Parameters
+        ----------
+        element : Tab
+            A zendriver element handle for a
+            ``div.news-row.news-row-link`` node.
+
+        Returns
+        -------
+        ArticleData or None
+            Parsed article data, or ``None`` if the title or URL
+            could not be extracted.
+        """
+        title = await self._get_text(element, "span.title-text span")
+        if not title:
+            return None
+
+        url = await self._get_attribute(
+            element, "a.news-cell.nc-title", "href"
+        )
+        if not url:
+            return None
+
+        date = (
+            await self._get_attribute(element, "time", "datetime")
+            or await self._get_text(element, "time")
+            or ""
+        )
+
+        return ArticleData(
+            title=title,
+            url=url,
+            redirect_url=self._build_redirect_url(url),
+            date=date,
+            source=await self._get_text(element, "span.si-source-domain")
+            or "unknown",
+            source_type=await self._detect_source_type(element),
+            currencies=await self._get_currencies(element),
+            votes=await self._get_votes(element),
+        )
+
     @staticmethod
     def _build_redirect_url(url: str) -> str:
         """Convert an article URL to its click-through redirect URL.
