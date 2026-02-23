@@ -489,6 +489,33 @@ class NewsArticleScraper:
             pass
         return None
 
+    @staticmethod
+    async def _detect_source_type(element: Tab) -> str:
+        """Determine the article's source type from icon CSS classes.
+
+        Parameters
+        ----------
+        element : Tab
+            Article row element to inspect.
+
+        Returns
+        -------
+        str
+            One of ``"twitter"``, ``"youtube"``, or ``"link"``.
+        """
+        try:
+            if await element.query_selector(
+                "span.open-link-icon.icon.icon-twitter"
+            ):
+                return "twitter"
+            if await element.query_selector(
+                "span.open-link-icon.icon.icon-youtube-play"
+            ):
+                return "youtube"
+        except Exception:
+            pass
+        return "link"
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
