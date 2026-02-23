@@ -9,12 +9,20 @@ import asyncio
 import json
 import os
 import re
+import time
 from typing import TypedDict
+import numpy as np
+import pandas as pd
+from sqlalchemy import create_engine
+from sqlalchemy.dialects.postgresql import JSONB
 
+import requests
 import zendriver as zd
+from tqdm import tqdm
 from zendriver.core.tab import Tab
 
 from logging_config import logger
+
 
 class ArticleData(TypedDict):
     """Schema for a scraped news article.
