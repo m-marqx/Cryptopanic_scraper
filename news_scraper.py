@@ -238,6 +238,32 @@ class NewsArticleScraper:
             logger.error(
                 "Failed to save cache to '%s': %s", self.cache_path, exc
             )
+
+    def _save_unique_urls(self) -> None:
+        """Build and save a mapping of unique source domains to sample URLs.
+
+        Iterates the cache and keeps the first URL encountered for each
+        unique source domain.  Writes to ``self.unique_urls_path``.
+        """
+        urls = pd.read_json(self.cache_path).T.query(
+            "source_type == 'link'"
+        ).drop_duplicates("source").set_index("source")["url"].to_dict()
+
+        try:
+            with open(self.unique_urls_path, 'w', encoding="utf-8") as f:
+                json.dump(urls, f, indent=2, ensure_ascii=False)
+            logger.info(
+                "Saved %d unique source URLs to '%s'.",
+                len(urls),
+                self.unique_urls_path,
+            )
+        except OSError as exc:
+            logger.error(
+                "Failed to save unique URLs to '%s': %s",
+                self.unique_urls_path,
+                exc,
+            )
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
