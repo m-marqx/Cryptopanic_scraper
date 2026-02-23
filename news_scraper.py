@@ -589,6 +589,15 @@ class NewsArticleScraper:
         pattern: str = r"^(" + "|".join(map(re.escape, prefixes)) + r")"
         return url_series.str.replace(pattern, "", regex=True)
 
+    @staticmethod
+    def _strip_single_prefix(domain: str) -> str:
+        """Strip common subdomain prefixes from a single domain string."""
+        prefixes = ["www.", "en.", "news.", "feeds2.", "daily.", "square."]
+        for prefix in prefixes:
+            if domain.startswith(prefix):
+                domain = domain[len(prefix) :]
+        return domain
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
