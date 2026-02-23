@@ -274,6 +274,47 @@ class NewsArticleScraper:
             self._save_cache()
             self._new_since_last_save = 0
 
+    async def _bypass_cloudflare(self, page: Tab) -> None:
+        """Wait for and solve the Cloudflare challenge.
+
+        Parameters
+        ----------
+        page : Tab
+            The zendriver page/tab to verify.
+
+        Raises
+        ------
+        RuntimeError
+            If the challenge cannot be bypassed after
+            ``_CF_MAX_ATTEMPTS`` attempts.
+        """
+        for attempt in range(1, self._CF_MAX_ATTEMPTS + 1):
+            try:
+                await page.wait_for(selector=".ray-id", timeout=1)
+                cf_marker = await page.query_selector(".ray-id")
+                logger.info(f"Cloudflare challenge detected (attempt {attempt}/{self._CF_MAX_ATTEMPTS}).")
+            except Exception:
+                cf_marker = None
+
+            if not cf_marker:
+                # logger.info("No Cloudflare challenge detected — proceeding.")
+                return
+
+            logger.warning(f"Cloudflare challenge detected (attempt {attempt}/{self._CF_MAX_ATTEMPTS}).")
+            await page.sleep(5)
+            # await page.verify_cf(self.template_path)
+            await page.verify_cf()
+
+        if cf_marker:
+            await page.save_screenshot("cf_challenge_failure.png")
+            raise RuntimeError(
+                "Failed to bypass Cloudflare after "
+                f"{self._CF_MAX_ATTEMPTS} attempts.  "
+                "Screenshot saved to cf_challenge_failure.png."
+            )
+
+        logger.info("Cloudflare challenge cleared.")
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
