@@ -350,6 +350,71 @@ class NewsArticleScraper:
             return marker is not None
         except Exception:
             return False
+
+    async def _parse_and_store(
+        self, element: Tab, index: int, total: int
+    ) -> bool:
+        """Parse a single article and store it in the cache immediately.
+
+        Designed to run as a concurrent task inside an
+        ``asyncio.TaskGroup``.  Each task independently parses its
+        element and writes the result to the shared cache, triggering
+        an incremental save when the threshold is reached.
+
+        Parameters
+        ----------
+        element : Tab
+            A zendriver element handle for a
+            ``div.news-row.news-row-link`` node.
+        index : int
+            1-based position of this article in the DOM (for logging).
+        total : int
+            Total number of articles being processed (for logging).
+
+        Returns
+        -------
+        bool
+            ``True`` if a new article was stored, ``False`` otherwise.
+        """
+        try:
+            result = await self._parse_article(element)
+            if result is None:
+                logger.debug(
+                    "[%d/%d] Skipped — could not parse title or URL.",
+                    index,
+                    total,
+                )
+                return False
+
+            url = result["url"]
+            if url in self.cache and not self.force_update:
+                logger.debug(
+                    "[%d/%d] Already cached: %s",
+                    index,
+                    total,
+                    result["title"][:60],
+                )
+                return False
+
+            self.cache[url] = result
+            self._new_since_last_save += 1
+
+            logger.info(
+                "Scraped [%d/%d]: %s | %s | %s | %s",
+                index,
+                total,
+                result["title"][:80],
+                result["source"],
+                result["source_type"],
+                result["date"] or "no date",
+            )
+
+            self._conditional_incremental_save()
+            return True
+        except Exception as exc:
+            logger.error("Error parsing article %d: %s", index, exc)
+            return False
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
