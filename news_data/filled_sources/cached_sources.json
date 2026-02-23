@@ -25,7 +25,10 @@
     },
     "cryptopotato.com/strategys-bitcoin-treasury-is-underwater-but-2025-results-still-impressive/": {
         "source": "cryptopotato.com",
-        "title_css_path": ["div.post-title-area", "div.date-area-meta"],
+        "title_css_path": [
+            "div.post-title-area",
+            "div.date-area-meta"
+        ],
         "text_css_path": "div.post-details-content",
         "ignore_css_path": "ul, div.single-post-tags, h3.heading-4, div.code-block.code-block-12"
     },
@@ -57,9 +60,8 @@
         "source": "coinpaper.com",
         "title_css_path": "header",
         "text_css_path": "div[class^='RenderHTMLTextstyles__Container']",
-        "ignore_css_path": "label, a, span, div.absolute']"
+        "ignore_css_path": "label, a, span, div.absolute, figure, figcaption, p:has(em:contains('Source'))"
     },
-
     "www.cryptointelligence.co.uk/tether-freezes-hundreds-of-millions-in-crypto-following-turkish-probe/": {
         "source": "www.cryptointelligence.co.uk",
         "title_css_path": "div.post-item-header",
@@ -120,7 +122,6 @@
         "text_css_path": "article.articleBody",
         "ignore_css_path": "a.underline, button, span.acf-media-credit, div.bg-card-active, div.opacity-50, span.text-xs, span.font-display-light, span.copyright, div.hidden"
     },
-
     "biturai.com/en/news/decoding-bitcoins-future-key-price-influencers-for-active-traders-mlcst60s": {
         "source": "biturai.com",
         "title_css_path": "h1, div.text-zinc-500",
@@ -145,7 +146,7 @@
         "text_css_path": "div.entry-content",
         "ignore_css_path": "div.shib-faq-section, div.shib-faq-section ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:') ~ *, p:contains('CONTENT ATTRIBUTION NOTICE:'), div.shib-keypoints-box, p:has(a.shib-related-link), div.fluid-width-video-wrapper, div.fluid-width-video-wrapper ~ *, section.shib-author-profile, div:has(> div.shib-social-cta-buttons)",
         "skip": true,
-        "note": "i don't really think that shib.io is a reliable source and since is focused on shiba news, i don't think it's a good idea to use it" 
+        "note": "i don't really think that shib.io is a reliable source and since is focused on shiba news, i don't think it's a good idea to use it"
     },
     "en.spaziocrypto.com/regulation/exchanges-report-your-crypto-data-to-the-irs/": {
         "source": "en.spaziocrypto.com",
@@ -198,15 +199,17 @@
     "coincu.com/news/crypto/21shares-files-for-ondo-etf/": {
         "source": "coincu.com",
         "title_css_path": "div.box-text-inner, h1.post-title",
-        "text_css_path": "ul.wp-block-list ~ *",
-        "ignore_css_path": "div.right-sidebar, figcaption, em:has(strong:contains('DISCLAIMER'))"
+        "text_css_path": ".heateorSssClear ~ *",
+        "ignore_css_path": "figure.wp-block-table ~ *, figure, div.right-sidebar, figure, img, .box-image, p:has(+ ul.wp-block-list), ul.wp-block-list, em:has(strong:contains('DISCLAIMER')), div.kk-star-ratings ~ *, div.kk-star-ratings",
+        "skip": true,
+        "note": "the article is not clearly marked as sponsored content, this will lead to low quality data and false positives."
     },
     "advertorial.cryptonews.com/press-releases/23x-oversubscribed-500k-raised-in-hours-if-youre-not-already-in-qone-this-is-your-last-warning/": {
         "source": "advertorial.cryptonews.com",
         "title_css_path": "",
         "text_css_path": "",
         "ignore_css_path": "*",
-        "skip": true ,
+        "skip": true,
         "note": "is advertorial source"
     },
     "cryptonews.com/news/xrp-prints-bearish-gravestone-doji-recovery-stalls-1-65-resistance/": {
@@ -324,8 +327,8 @@
         "text_css_path": ".post-article-content",
         "ignore_css_path": ".breadcrumbs, ul, figure, figcaption, .post-meta"
     },
-    "https://axeladlerjr.com/bitcoin-miner-reserve-outflow-tracking-selling-pressure/": {
-        "source": "https://axeladlerjr.com",
+    "axeladlerjr.com/bitcoin-miner-reserve-outflow-tracking-selling-pressure/": {
+        "source": "axeladlerjr.com",
         "title_css_path": "li a picture + span, .leading-none time, h1.text-typ, p.text-base",
         "text_css_path": "article",
         "ignore_css_path": ".hidden, h2#tldr + ul, h2#tldr, figure, h2#related-guides + ul, h2#related-guides, h2#conclusion ~ *, h2#conclusion, p:has(+ .kg-audio-card), .kg-audio-card, .kg-signup-card, a[href^='/tag/'], p:has(a + br), p:has(a[rel='noreferrer'])",
