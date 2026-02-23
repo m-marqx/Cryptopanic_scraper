@@ -286,6 +286,30 @@ class NewsArticleScraper:
             self._save_cache()
             self._new_since_last_save = 0
 
+    async def run(self) -> None:
+        """Execute the full scraping pipeline.
+
+        Launches the browser, navigates to CryptoPanic, bypasses
+        Cloudflare, scrolls to collect all available articles, and
+        saves the results to disk.
+
+        Raises
+        ------
+        RuntimeError
+            If Cloudflare bypass fails after maximum attempts.
+        """
+        browser = await zd.start(headless=self.headless, sandbox=False)
+        try:
+            page = await browser.get(self._BASE_URL)
+            logger.info("Navigating to %s", self._BASE_URL)
+
+            await self._bypass_cloudflare(page)
+            await self._scroll_and_collect(page)
+        finally:
+            await browser.stop()
+            self._save_cache()
+            self._save_unique_urls()
+
     async def _bypass_cloudflare(self, page: Tab) -> None:
         """Wait for and solve the Cloudflare challenge.
 
