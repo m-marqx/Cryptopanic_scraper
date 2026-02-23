@@ -435,6 +435,30 @@ class NewsArticleScraper:
             return f"/news/click/{match.group(1)}/"
         return url
 
+    @staticmethod
+    async def _get_text(element: Tab, selector: str) -> str | None:
+        """Safely extract text content from a child element.
+
+        Parameters
+        ----------
+        element : Tab
+            Parent element to query within.
+        selector : str
+            CSS selector for the target child element.
+
+        Returns
+        -------
+        str or None
+            Stripped text content, or ``None`` if not found.
+        """
+        try:
+            node = await element.query_selector(selector)
+            if node and node.text:
+                return node.text.strip()
+        except Exception:
+            pass
+        return None
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
