@@ -327,6 +327,78 @@ class NewsArticleScraper:
 
         logger.info("Cloudflare challenge cleared.")
 
+    async def _scroll_and_collect(self, page: Tab) -> None:
+        """Scroll to the absolute bottom and collect every article.
+
+        Continuously scrolls, clicks "Load more" when available, and
+        stops only when no new content appears after ``max_retries``
+        consecutive attempts or the ``all-loaded`` marker is found.
+
+        Parameters
+        ----------
+        page : Tab
+            The zendriver page/tab to scroll and scrape.
+        """
+        stale_count = 0
+        previous_count = 0
+
+        while True:
+            # Scroll to bottom
+            await page.evaluate(
+                "window.scrollTo(0, document.body.scrollHeight)"
+            )
+            await page.sleep(self.scroll_pause)
+
+            # Click "Load more" button if present
+            await self._click_load_more(page)
+
+            # Count articles currently in the DOM
+            articles = await page.query_selector_all(
+                "div.news-row.news-row-link"
+            )
+            current_count = len(articles)
+            logger.info("Articles in DOM: %d", current_count)
+
+            if current_count == previous_count:
+                stale_count += 1
+                logger.info(
+                    "No new articles loaded (%d/%d stale attempts).",
+                    stale_count,
+                    self.max_retries,
+                )
+                if stale_count >= self.max_retries:
+                    logger.info("Reached max stale retries — stopping scroll.")
+                    break
+            else:
+                stale_count = 0
+
+            previous_count = current_count
+
+            # Check for CryptoPanic's "all-loaded" DOM marker
+            if await self._is_all_loaded(page):
+                logger.info("All articles loaded (all-loaded marker found).")
+                break
+
+        # ----------------------------------------------------------
+        #  Extract article data — prefer bulk JS (1 CDP call) over
+        #  per-element parsing (thousands of CDP calls).
+        # ----------------------------------------------------------
+        new_count = await self._bulk_extract_articles(page)
+
+        if new_count == -1:
+            # JS extraction failed — fall back to concurrent parsing
+            logger.warning(
+                "Bulk JS extraction failed. "
+                "Falling back to concurrent per-element parsing."
+            )
+            new_count = await self._parse_articles_concurrent(page)
+
+        logger.info(
+            "Finished — %d new articles collected (%d total in cache).",
+            new_count,
+            len(self.cache),
+        )
+
     async def _bulk_extract_articles(self, page: Tab) -> int:
         """Extract every article from the DOM via a single JS call.
 
