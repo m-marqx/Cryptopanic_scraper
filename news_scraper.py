@@ -1004,6 +1004,144 @@ class NewsArticleScraper:
                 exc,
             )
 
+    async def open_all_redirect_urls(self) -> None:
+        """Open all redirect URLs, resolve final destinations, and
+        fetch article content via the Jina reader API.
+
+        Uses zendriver to open each redirect URL, records the final
+        URL after redirection, then calls ``read_with_jina_api`` to
+        extract the article content.  Shows a ``tqdm`` progress bar
+        and incrementally saves partial results every
+        ``_REDIRECT_SAVE_INTERVAL`` URLs so that progress is not
+        lost on failure.
+        """
+        loaded_data = self._load_redirected_urls()
+        news_content = pd.read_sql("SELECT * FROM news_content", self._engine)
+
+        #Store loaded_data into news_content table
+        unloaded_data = loaded_data[~loaded_data["redirect_url"].isin(news_content["redirect_url"])]
+        unloaded_data.to_sql("news_content", self._engine, if_exists="append", index=False)
+
+        #remove data already in news_content table
+        not_cached_data = news_content.query("content.isnull()")
+
+        redirected_urls = not_cached_data["redirect_url"].tolist()
+        sources = not_cached_data["source"].tolist()
+        redirected_urls_dict: dict[str, str] = {
+            url: "" for url in redirected_urls
+        }
+        content_map: dict[str, str | None] = {}
+
+        if not redirected_urls:
+            return
+
+        # Load content DataFrame upfront for incremental updates
+        cached_df = pd.read_json(self.cache_path).T
+        if "content" not in cached_df.columns:
+            cached_df["content"] = None
+        if "final_url" not in cached_df.columns:
+            cached_df["final_url"] = None
+
+        browser = await zd.start(headless=self.headless)
+        unsaved_count = 0
+        recently_fetched_urls: list[str] = []
+
+        async def _open_redirect_page(
+            redirect_url: str,
+            source: str,
+            bypass_cf: bool = False,
+        ) -> None:
+            try:
+                page = await browser.get(self._BASE_URL[:-1] + redirect_url)
+
+                if bypass_cf:
+                    await self._bypass_cloudflare(page)
+                is_cloudflare_page = await page.query_selector(
+                    "cf-footer-item"
+                )
+
+                if is_cloudflare_page:
+                    redirected_urls_dict[redirect_url] = (
+                        "Cloudflare Page Error"
+                    )
+                    content_map[redirect_url] = None
+                    return
+
+                final_url = page.url
+                redirected_urls_dict[redirect_url] = final_url
+            except Exception as exc:
+                logger.error(
+                    "Failed to resolve redirect '%s': %s", redirect_url, exc
+                )
+                redirected_urls_dict[redirect_url] = f"Error: {exc}"
+                content_map[redirect_url] = None
+                return
+
+            # Fetch article content via Jina API (only if redirected away from CryptoPanic)
+            if final_url.startswith(self._BASE_URL):
+                logger.debug(
+                    "Still on CryptoPanic ('%s') — skipping Jina fetch.",
+                    final_url[:80],
+                )
+                content_map[redirect_url] = None
+            else:
+                content = self.read_with_jina_api(final_url, source)
+                content_map[redirect_url] = content
+
+        def _incremental_save() -> None:
+            """Update the DataFrame with current content and save both caches."""
+            self._save_redirected_urls(redirected_urls_dict)
+            cached_df["content"] = (
+                cached_df["redirect_url"]
+                .map(content_map)
+                .combine_first(cached_df["content"])
+            )
+            cached_df["final_url"] = (
+                cached_df["redirect_url"]
+                .map(redirected_urls_dict)
+                .combine_first(cached_df["final_url"])
+            )
+            self._save_content_cache(cached_df)
+
+            if recently_fetched_urls:
+                fetched_df = cached_df[
+                    cached_df["redirect_url"].isin(recently_fetched_urls)
+                ]
+                self._save_data_in_db(fetched_df)
+                recently_fetched_urls.clear()
+
+        try:
+            for redirect_url, source in tqdm(
+                zip(redirected_urls, sources),
+                desc="Resolving redirects",
+                unit="url",
+                total=len(redirected_urls),
+            ):
+                await _open_redirect_page(
+                    redirect_url, source, bypass_cf=True
+                )
+                recently_fetched_urls.append(redirect_url)
+                unsaved_count += 1
+
+                if unsaved_count >= self._REDIRECT_SAVE_INTERVAL:
+                    _incremental_save()
+                    unsaved_count = 0
+                    logger.info(
+                        "Incremental save — %d redirected URLs so far.",
+                        len(redirected_urls_dict),
+                    )
+        except Exception as e:
+            logger.error("Error resolving redirects: %s", e)
+            raise Exception(f"Error resolving redirects: {e}")
+        finally:
+            _incremental_save()
+            logger.info(
+                "Saved %d redirected URLs to '%s'.",
+                len(redirected_urls_dict),
+                self._CACHED_REDIRECT_PATH,
+            )
+            await browser.stop()
+
     def read_with_jina_api(self, url: str, source: str) -> str | None:
         """Fetch article content from a URL using the Jina reader API.
 
