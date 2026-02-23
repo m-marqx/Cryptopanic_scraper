@@ -415,6 +415,26 @@ class NewsArticleScraper:
             logger.error("Error parsing article %d: %s", index, exc)
             return False
 
+    @staticmethod
+    def _build_redirect_url(url: str) -> str:
+        """Convert an article URL to its click-through redirect URL.
+
+        Parameters
+        ----------
+        url : str
+            Article URL path (e.g. ``/news/29538595/Dogecoin-...``).
+
+        Returns
+        -------
+        str
+            Redirect URL (e.g. ``/news/click/29538595/``), or the
+            original URL if the numeric ID cannot be extracted.
+        """
+        match = re.search(r"/news/(\d+)/", url)
+        if match:
+            return f"/news/click/{match.group(1)}/"
+        return url
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
