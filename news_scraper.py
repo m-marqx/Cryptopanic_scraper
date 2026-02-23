@@ -1004,6 +1004,75 @@ class NewsArticleScraper:
                 exc,
             )
 
+    def read_with_jina_api(self, url: str, source: str) -> str | None:
+        """Fetch article content from a URL using the Jina reader API.
+
+        Builds ``X-Target-Selector`` from the source's
+        ``title_css_path`` and ``text_css_path``, and passes
+        ``ignore_css_path`` as ``X-Remove-Selector``.
+
+        Parameters
+        ----------
+        url : str
+            The final article URL to read.
+        source : str
+            The source domain (e.g. ``"ethnews.com"``).
+
+        Returns
+        -------
+        str or None
+            The extracted article text, or ``None`` if the source
+            should be skipped or configuration is missing.
+        """
+        config = self._find_source_config(source)
+        if config is None:
+            logger.debug("No source config found for '%s' — skipping.", source)
+            return None
+
+        if config.get("skip"):
+            logger.debug("Source '%s' is marked as skip — skipping.", source)
+            return None
+
+        # Build X-Target-Selector from title + text CSS paths
+        title_paths = config.get("title_css_path", "")
+        text_paths = config.get("text_css_path", "")
+
+        # Normalise to list (some sources use list, others string)
+        if isinstance(title_paths, str):
+            title_paths = [title_paths] if title_paths else []
+        if isinstance(text_paths, str):
+            text_paths = [text_paths] if text_paths else []
+
+        target_selectors = [s for s in title_paths + text_paths if s]
+        target_selector = ", ".join(target_selectors)
+
+        ignore_css = config.get("ignore_css_path", "")
+
+        headers: dict[str, str] = {}
+        if self._jina_api_key:
+            headers["Authorization"] = f"Bearer {self._jina_api_key}"
+        if target_selector:
+            headers["X-Target-Selector"] = target_selector
+        if ignore_css:
+            headers["X-Remove-Selector"] = ignore_css
+
+        jina_url = f"{self._JINA_BASE_URL}{url}"
+
+        try:
+            response = requests.get(jina_url, headers=headers, timeout=10)
+            response.raise_for_status()
+            logger.info(
+                "Jina API fetched %d chars for '%s'.",
+                len(response.text),
+                url[:80],
+            )
+            return response.text
+        except requests.RequestException as exc:
+            logger.error("Jina API request failed for '%s': %s", url, exc)
+            return None
+        finally:
+            time.sleep(self._jina_rate_limit)
+
     def _save_data_in_db(
         self,
         content: pd.DataFrame,
