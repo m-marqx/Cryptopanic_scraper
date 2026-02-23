@@ -331,6 +331,25 @@ class NewsArticleScraper:
                 await page.sleep(self.scroll_pause)
         except Exception:
             pass
+
+    async def _is_all_loaded(self, page: Tab) -> bool:
+        """Check whether the ``all-loaded`` DOM marker is present.
+
+        Parameters
+        ----------
+        page : Tab
+            The current page/tab.
+
+        Returns
+        -------
+        bool
+            ``True`` if the marker element exists, ``False`` otherwise.
+        """
+        try:
+            marker = await page.select("all-loaded", timeout=1)
+            return marker is not None
+        except Exception:
+            return False
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
