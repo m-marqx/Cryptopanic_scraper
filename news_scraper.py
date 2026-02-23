@@ -650,3 +650,15 @@ class NewsArticleScraper:
                 return config
         return None
 
+    def _save_content_cache(self, df: pd.DataFrame) -> None:
+        """Save the content DataFrame to disk as JSON."""
+        try:
+            df.to_parquet(self._CONTENT_CACHE_PATH)
+            logger.info(
+                "Saved %d articles with content to '%s'.",
+                len(df),
+                self._CONTENT_CACHE_PATH,
+            )
+        except OSError as exc:
+            logger.error("Failed to save content cache: %s", exc)
+
