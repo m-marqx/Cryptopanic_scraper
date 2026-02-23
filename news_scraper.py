@@ -264,6 +264,16 @@ class NewsArticleScraper:
                 exc,
             )
 
+    def _conditional_incremental_save(self) -> None:
+        """Save the cache if enough new articles have accumulated.
+
+        Triggers a write every ``_INCREMENTAL_SAVE_INTERVAL`` new articles
+        to avoid data loss during long scroll sessions.
+        """
+        if self._new_since_last_save >= self._INCREMENTAL_SAVE_INTERVAL:
+            self._save_cache()
+            self._new_since_last_save = 0
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
