@@ -540,6 +540,42 @@ class NewsArticleScraper:
             pass
         return ["N/A"]
 
+    @staticmethod
+    async def _get_votes(element: Tab) -> dict[str, int]:
+        """Extract vote counts from an article element.
+
+        Parses the ``title`` attribute of each ``span.nc-vote-cont``
+        child, which follows the pattern ``"<count> <type> votes"``
+        (e.g. ``"5 Bullish votes"``).
+
+        Parameters
+        ----------
+        element : Tab
+            Article row element to inspect.
+
+        Returns
+        -------
+        dict[str, int]
+            Vote counts keyed by type (e.g. ``{"Bullish": 5}``).
+            Returns an empty dict if no votes are found.
+        """
+        votes: dict[str, int] = {}
+        try:
+            nodes = await element.query_selector_all("span.nc-vote-cont")
+            for node in nodes:
+                title_attr = node.attrs.get("title")
+                if not title_attr:
+                    continue
+                match = re.match(
+                    r"\s*(\d+)\s+(.+?)\s+votes?\s*$",
+                    title_attr.strip(),
+                )
+                if match:
+                    votes[match.group(2)] = int(match.group(1))
+        except Exception:
+            pass
+        return votes
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
