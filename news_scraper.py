@@ -662,3 +662,16 @@ class NewsArticleScraper:
         except OSError as exc:
             logger.error("Failed to save content cache: %s", exc)
 
+    def _save_redirected_urls(self, redirected_urls: dict[str, str]) -> None:
+        """Persist the redirect-URL mapping to disk."""
+        try:
+            pd.DataFrame([redirected_urls]).to_parquet(
+                self._CACHED_REDIRECT_PATH
+            )
+        except (OSError, ValueError) as exc:
+            logger.error(
+                "Failed to save redirect cache to '%s': %s",
+                self._CACHED_REDIRECT_PATH,
+                exc,
+            )
+
