@@ -939,6 +939,58 @@ class NewsArticleScraper:
         except OSError as exc:
             logger.error("Failed to save content cache: %s", exc)
 
+    def _load_redirected_urls(self) -> dict[str, str]:
+        """Load previously resolved redirect URLs from disk.
+
+        Returns
+        -------
+        dict[str, str]
+            Mapping of redirect URL → final URL.  Empty dict if the
+            cache file does not exist or cannot be parsed.
+        """
+        if not os.path.exists(self._CACHED_SOURCES_PATH) or not os.path.exists(
+            self.cache_path
+        ):
+            return {}
+        try:
+            redirect_data = pd.read_json(self.cache_path).T
+            link_data = redirect_data.query("source_type == 'link'")[
+                ["redirect_url", "source"]
+            ]
+            cached_sources = (
+                pd.read_json(self._CACHED_SOURCES_PATH)
+                .T.reset_index()
+                .rename(columns={"index": "url"})
+            )
+
+            cached_sources["source"] = self._remove_site_prefixes(
+                cached_sources["source"]
+            )
+            link_data["source"] = self._remove_site_prefixes(
+                link_data["source"]
+            )
+
+            cached_sources_list = cached_sources["source"].tolist()
+            source_not_found = (
+                link_data.query("source != @cached_sources_list")["source"]
+                .unique()
+                .tolist()
+            )
+
+            logger.error(
+                "Sources not found: %s",
+                source_not_found,
+            )
+
+            return link_data.query("source == @cached_sources_list")
+        except (json.JSONDecodeError, OSError) as exc:
+            logger.error(
+                "Failed to load redirect cache from '%s': %s",
+                self._CACHED_SOURCES_PATH,
+                exc,
+            )
+            return {}
+
     def _save_redirected_urls(self, redirected_urls: dict[str, str]) -> None:
         """Persist the redirect-URL mapping to disk."""
         try:
