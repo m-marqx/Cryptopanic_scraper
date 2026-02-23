@@ -516,6 +516,30 @@ class NewsArticleScraper:
             pass
         return "link"
 
+    @staticmethod
+    async def _get_currencies(element: Tab) -> list[str]:
+        """Extract currency ticker symbols from an article element.
+
+        Parameters
+        ----------
+        element : Tab
+            Article row element to inspect.
+
+        Returns
+        -------
+        list[str]
+            Ticker symbols (e.g. ``["BTC", "ETH"]``), or ``["N/A"]``
+            if none are found.
+        """
+        try:
+            nodes = await element.query_selector_all("a.colored-link")
+            tickers = [n.text.strip() for n in nodes if n.text]
+            if tickers:
+                return tickers
+        except Exception:
+            pass
+        return ["N/A"]
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
