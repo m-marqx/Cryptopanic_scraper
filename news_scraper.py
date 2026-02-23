@@ -183,7 +183,6 @@ class NewsArticleScraper:
         max_retries: int = 5,
         scroll_pause: float = 2.0,
         force_update: bool = False,
-        verify_template_path=None,
         max_concurrency: int | None = None,
     ) -> None:
         self.cache_path = cache_path
@@ -192,7 +191,6 @@ class NewsArticleScraper:
         self.max_retries = max_retries
         self.scroll_pause = scroll_pause
         self.force_update = force_update
-        self.template_path = verify_template_path
         self.max_concurrency = max_concurrency or self._DEFAULT_MAX_CONCURRENCY
 
         self.cache: dict[str, ArticleData] = self._load_cache()
@@ -338,7 +336,6 @@ class NewsArticleScraper:
 
             logger.warning(f"Cloudflare challenge detected (attempt {attempt}/{self._CF_MAX_ATTEMPTS}).")
             await page.sleep(5)
-            # await page.verify_cf(self.template_path)
             await page.verify_cf()
 
         if cf_marker:
