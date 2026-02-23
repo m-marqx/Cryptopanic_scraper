@@ -197,6 +197,15 @@ class NewsArticleScraper:
 
         self.cache: dict[str, ArticleData] = self._load_cache()
         self._new_since_last_save: int = 0
+        self._sources_config: dict = self._load_sources_config()
+        self._engine = create_engine(self._DATABASE_URL)
+
+        self._jina_api_key: str | None = os.getenv("JINA_API_KEY")
+        self._jina_rate_limit: float = (
+            self._JINA_RATE_LIMIT_AUTH
+            if self._jina_api_key
+            else self._JINA_RATE_LIMIT_FREE
+        )
 
     def _load_cache(self) -> dict[str, ArticleData]:
         """Load cached article data from disk.
