@@ -459,6 +459,36 @@ class NewsArticleScraper:
             pass
         return None
 
+    @staticmethod
+    async def _get_attribute(
+        element: Tab, selector: str, attribute: str
+    ) -> str | None:
+        """Safely extract an attribute value from a child element.
+
+        Parameters
+        ----------
+        element : Tab
+            Parent element to query within.
+        selector : str
+            CSS selector for the target child element.
+        attribute : str
+            Name of the attribute to read.
+
+        Returns
+        -------
+        str or None
+            Stripped attribute value, or ``None`` if not found.
+        """
+        try:
+            node = await element.query_selector(selector)
+            if node:
+                value = node.attrs.get(attribute)
+                if value:
+                    return value.strip()
+        except Exception:
+            pass
+        return None
+
     def _load_sources_config(self) -> dict:
         """Load formatted source selectors from disk.
 
