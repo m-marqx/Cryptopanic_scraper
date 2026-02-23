@@ -327,6 +327,92 @@ class NewsArticleScraper:
 
         logger.info("Cloudflare challenge cleared.")
 
+    async def _bulk_extract_articles(self, page: Tab) -> int:
+        """Extract every article from the DOM via a single JS call.
+
+        Executes ``_EXTRACT_ALL_JS`` inside the browser, which returns
+        a list of plain objects with all the article fields already
+        extracted.  This replaces thousands of sequential CDP
+        round-trips with exactly **one**.
+
+        Parameters
+        ----------
+        page : Tab
+            The zendriver page/tab.
+
+        Returns
+        -------
+        int
+            Number of *new* articles stored, or ``-1`` if the JS
+            extraction failed (caller should fall back to per-element
+            parsing).
+        """
+        try:
+            raw: list[dict] = await page.evaluate(self._EXTRACT_ALL_JS)
+        except Exception as exc:
+            logger.error("JS bulk extraction raised: %s", exc)
+            return -1
+
+        if not isinstance(raw, list):
+            logger.error(
+                "JS bulk extraction returned %s instead of list.",
+                type(raw).__name__,
+            )
+            return -1
+
+        total = len(raw)
+        logger.info(
+            "Bulk JS extraction returned %d articles — processing.", total
+        )
+
+        new_count = 0
+        for idx, item in enumerate(raw, start=1):
+            title = item.get("title")
+            url = item.get("url")
+            if not title or not url:
+                logger.debug(
+                    "[%d/%d] Skipped — missing title or URL.", idx, total
+                )
+                continue
+
+            if url in self.cache and not self.force_update:
+                logger.debug(
+                    "[%d/%d] Already cached: %s",
+                    idx,
+                    total,
+                    title[:60],
+                )
+                continue
+
+            article = ArticleData(
+                title=title,
+                url=url,
+                redirect_url=item.get("redirect_url", url),
+                date=item.get("date", ""),
+                source=item.get("source", "unknown"),
+                source_type=item.get("source_type", "link"),
+                currencies=item.get("currencies", ["N/A"]),
+                votes=item.get("votes", {}),
+            )
+
+            self.cache[url] = article
+            self._new_since_last_save += 1
+            new_count += 1
+
+            logger.info(
+                "Scraped [%d/%d]: %s | %s | %s | %s",
+                idx,
+                total,
+                title[:80],
+                article["source"],
+                article["source_type"],
+                article["date"] or "no date",
+            )
+
+            self._conditional_incremental_save()
+
+        return new_count
+
     async def _parse_articles_concurrent(self, page: Tab) -> int:
         """Parse all article elements concurrently with a TaskGroup.
 
