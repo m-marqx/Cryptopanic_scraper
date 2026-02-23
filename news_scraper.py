@@ -110,10 +110,12 @@ class NewsArticleScraper:
     _CF_MAX_ATTEMPTS = 5
     _INCREMENTAL_SAVE_INTERVAL = 50
     _DEFAULT_MAX_CONCURRENCY = 50
-    _CACHED_REDIRECT_PATH = "news_data/filled_sources/redirected_sources.json"
+    _CACHED_REDIRECT_PATH = (
+        "news_data/filled_sources/redirected_sources.parquet"
+    )
     _CACHED_SOURCES_PATH = "news_data/filled_sources/cached_sources.json"
     _FORMATTED_SOURCES_PATH = "news_data/filled_sources/formatted_sources.json"
-    _CONTENT_CACHE_PATH = "news_data/cached_news_content.json"
+    _CONTENT_CACHE_PATH = "news_data/cached_news_content.parquet"
     _JINA_BASE_URL = "https://r.jina.ai/"
     _DATABASE_URL = os.getenv("DATABASE_URL")
     _JINA_RATE_LIMIT_AUTH = 0.12  # seconds between requests (with API key)
