@@ -1015,18 +1015,20 @@ class NewsArticleScraper:
         loaded_data = self._load_redirected_urls()
         news_content = pd.read_sql("SELECT * FROM news_content", self._engine)
 
-        #Store loaded_data into news_content table
-        unloaded_data = loaded_data[~loaded_data["redirect_url"].isin(news_content["redirect_url"])]
-        unloaded_data.to_sql("news_content", self._engine, if_exists="append", index=False)
+        # Store loaded_data into news_content table
+        unloaded_data = loaded_data[
+            ~loaded_data["redirect_url"].isin(news_content["redirect_url"])
+        ]
+        unloaded_data.to_sql(
+            "news_content", self._engine, if_exists="append", index=False
+        )
 
-        #remove data already in news_content table
+        # remove data already in news_content table
         not_cached_data = news_content.query("content.isnull()")
 
         redirected_urls = not_cached_data["redirect_url"].tolist()
         sources = not_cached_data["source"].tolist()
-        redirected_urls_dict: dict[str, str] = {
-            url: "" for url in redirected_urls
-        }
+        redirected_urls_dict: dict[str, str] = {}
         content_map: dict[str, str | None] = {}
 
         if not redirected_urls:
