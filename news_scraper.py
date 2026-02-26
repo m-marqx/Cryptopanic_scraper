@@ -255,12 +255,16 @@ class NewsArticleScraper:
         Iterates the cache and keeps the first URL encountered for each
         unique source domain.  Writes to ``self.unique_urls_path``.
         """
-        urls = pd.read_json(self.cache_path).T.query(
-            "source_type == 'link'"
-        ).drop_duplicates("source").set_index("source")["url"].to_dict()
+        urls = (
+            pd.read_json(self.cache_path)
+            .T.query("source_type == 'link'")
+            .drop_duplicates("source")
+            .set_index("source")["url"]
+            .to_dict()
+        )
 
         try:
-            with open(self.unique_urls_path, 'w', encoding="utf-8") as f:
+            with open(self.unique_urls_path, "w", encoding="utf-8") as f:
                 json.dump(urls, f, indent=2, ensure_ascii=False)
             logger.info(
                 "Saved %d unique source URLs to '%s'.",
