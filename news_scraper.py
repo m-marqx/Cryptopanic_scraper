@@ -330,7 +330,11 @@ class NewsArticleScraper:
             try:
                 await page.wait_for(selector=".ray-id", timeout=1)
                 cf_marker = await page.query_selector(".ray-id")
-                logger.info(f"Cloudflare challenge detected (attempt {attempt}/{self._CF_MAX_ATTEMPTS}).")
+                logger.info(
+                    "Cloudflare challenge detected (attempt %d/%d).",
+                    attempt,
+                    self._CF_MAX_ATTEMPTS
+                )
             except Exception:
                 cf_marker = None
 
@@ -338,7 +342,11 @@ class NewsArticleScraper:
                 # logger.info("No Cloudflare challenge detected — proceeding.")
                 return
 
-            logger.warning(f"Cloudflare challenge detected (attempt {attempt}/{self._CF_MAX_ATTEMPTS}).")
+            logger.warning(
+                "Cloudflare challenge detected. (attempt %d/%d).",
+                attempt,
+                self._CF_MAX_ATTEMPTS
+            )
             await page.sleep(5)
             await page.verify_cf()
 
