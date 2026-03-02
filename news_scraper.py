@@ -900,7 +900,9 @@ class NewsArticleScraper:
             return {}
 
         try:
-            with open(self._FORMATTED_SOURCES_PATH, "r", encoding="utf-8") as fh:
+            with open(
+                self._FORMATTED_SOURCES_PATH, "r", encoding="utf-8"
+            ) as fh:
                 data = json.load(fh)
             logger.info(
                 "Loaded %d source configs from '%s'.",
@@ -909,9 +911,7 @@ class NewsArticleScraper:
             )
             return data
         except (json.JSONDecodeError, OSError) as exc:
-            logger.error(
-                "Failed to load sources config: %s", exc
-            )
+            logger.error("Failed to load sources config: %s", exc)
             return {}
 
     def _find_source_config(self, source: str) -> dict | None:
